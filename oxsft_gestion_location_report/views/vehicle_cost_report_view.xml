@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>        
+
+
+        <record id='vehicle_cost_report_tree' model='ir.ui.view'>
+            <field name="name">Vehicle Cost</field>
+            <field name="model">o.table.vehicle.cost</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="o_TbVehicleCost_TbVehicle_id"/>
+                    <field name="o_TbVehicleCost_TbAgence_id"/>
+                    <field name="o_TbVehicleCost_TbModel_id"/>
+                    <field name="o_TbVehicleCost_TbProduct_id"/>
+                    <field name="o_TbVehicleCost_Start_Idt" string="Date"/>
+                    <field name="o_TbVehicleCost_Total"/>
+                </tree>
+            </field>
+        </record>
+
+
+
+        <record id='vehicle_cost_report_search' model='ir.ui.view'>
+            <field name="name">Vehicle Cost</field>
+            <field name="model">o.table.vehicle.cost</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="o_TbVehicleCost_TbVehicle_id" />
+                    <field name="o_TbVehicleCost_TbAgence_id"/>
+                    <field name="o_TbVehicleCost_TbModel_id"/>
+                    <field name="o_TbVehicleCost_TbProduct_id"/>
+                    <group expand="0" string="Grouper par...">
+                        <filter name="o_TbVehicleCost_TbModel_id" context="{'group_by': 'o_TbVehicleCost_TbModel_id'}" string="Modèle"/>
+                        <filter name="o_TbVehicleCost_TbAgence_id" context="{'group_by': 'o_TbVehicleCost_TbAgence_id'}" string="Agence"/>
+                        <filter name="o_TbVehicleCost_TbProduct_id" context="{'group_by': 'o_TbVehicleCost_TbProduct_id'}" string="Produit"/>
+                        <filter name="o_TbVehicleCost_TbVehicle_id" context="{'group_by': 'o_TbVehicleCost_TbVehicle_id'}" string="Véhicule"/>
+                        <filter name="o_TbVehicleCost_Start_Idt" context="{'group_by': 'o_TbVehicleCost_Start_Idt:month'}" string="Période"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id='vehicle_cost_report_form' model='ir.ui.view'>
+            <field name="name">Vehicle Cost</field>
+            <field name="model">o.table.vehicle.cost</field>
+            <field name="arch" type="xml">
+                <form edit="false" create="false">
+                    <sheet>
+                        <group>
+                            <group>
+                    			<field name="o_TbVehicleCost_TbVehicle_id"/>
+                    			<field name="o_TbVehicleCost_TbAgence_id"/>
+                    			<field name="o_TbVehicleCost_TbModel_id"/>
+                    			<field name="o_TbVehicleCost_TbProduct_id"/>
+                            </group>
+                            <group>
+                    			<field name="o_TbVehicleCost_Start_Idt"/>
+                    			<field name="o_ViewVehicleCost_Stop_Idt"/>
+                    			<field name="o_TbVehicleCost_Total"/>                            
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id='vehicle_cost_report_action' model='ir.actions.act_window'>
+            <field name="name">Coûts d'entretien</field>
+            <field name="res_model">o.table.vehicle.cost</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="vehicle_cost_report_action" parent="fleet.menu_fleet_reporting" id="vehicle_cost_report_menu" groups="fleet.fleet_group_manager"/>
+</odoo>        

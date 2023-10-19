@@ -1,0 +1,1205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record model='ir.ui.view' id='fleet.fleet_vehicle_contract_form'>
+            <field name="name">fleet.vehicle.contract.form</field>
+            <field name="model">fleet.vehicle.contract</field>
+            <field name="priority" eval="1"/>
+            <field name="arch" type="xml">
+                <form>
+                	<header>
+                        <button name="contract_reservation" states="devis" type="object" class="oe_highlight" string="Réservation" groups="fleet.fleet_group_manager"/>
+                        <button name="contract_open" states="reservation" type="object" class="oe_highlight" string="Contrat" groups="fleet.fleet_group_manager"/>
+                        <button name="contract_depart" states="open" type="object" string="Départ" class="oe_highlight" groups="fleet.fleet_group_manager"/>
+                        <button name="contract_closed" states="open" type="object" string="Terminé" groups="fleet.fleet_group_manager"/>
+                        <button name="contract_closed" states="depart" type="object" class="oe_highlight" string="Terminé" groups="fleet.fleet_group_manager"/>
+                    	
+                    	<button name="%(action_invoice_preview)d" type="action" string="Pré-facturation" context="{'default_contract_id':active_id,'default_vehicle_id':vehicle_id}" attrs="{'invisible':[('return_ok','=',False)]}"/>
+                    	<button name="%(action_contract_vehicle_change_wizard)d" states="open" type="action" string="Changer de matériel" context="{'default_display_all':display_all}"/>
+                    	
+                    	<button name="contract_print" type="object" string="Imprimer"/>
+                    	<field name="state" widget="statusbar" nolabel="1" statusbar_visible="devis,reservation,open,depart,closed" statusbar_colors='{"devis":"blue","reservation":"blue"}'/>
+                	</header>
+                    
+                    <sheet>
+                    	<div class="oe_button_box">
+                            <button name="view_invoices"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-strikethrough"
+                                context="{'xml_id':'action_contract_invoice_tree'}"
+                                help="Toutes les factures liées à ce contrat" >
+                                <field name="contract_count" widget="statinfo" string="Factures"/>
+                            </button>
+                            <button name="return_action_to_open"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-book"
+                                context="{'xml_id':'fleet_vehicle_contract_bail_action'}"
+                                help="Toutes les cautions liées à ce contrat" >
+                                <field name="bail_count" widget="statinfo" string="Cautions"/>
+                            </button>
+                            <button name="return_action_to_open"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-tachometer"
+                                context="{'xml_id':'fleet_vehicle_move_act'}"
+                                help="Voir tous les mouvements du contrat" >
+                                <field name="move_count" widget="statinfo" string="Mouvements"/>
+                            </button>
+                        </div>
+                        <field name="currency_id" invisible="1"/>
+                    	<field name="contract_cd" invisible="1" />
+                    	<field name="category_name" invisible="1" />
+                    	<field name="src_agence_name" invisible="1" />
+						<table width="100%">
+							<tr>
+								<td>
+                					<label for="type_id" />
+                               		<div>
+                                    	<field name="type_id" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}" domain="[('contract_cd','=',contract_cd)]" context="{'default_contract_cd':contract_cd}" />
+                                	</div>								
+								</td>
+								<td>
+									<label for="booking" />
+                               		<div>
+                                    	<field name="booking" class="oe_inline" attrs="{'readonly':[('state','!=','devis')]}"/>
+                                	</div>		
+								</td>
+								<td>
+                					<label for="partner_name" />
+                               		<div>
+                                    	<field name="partner_name" class="oe_inline"/>
+                                	</div>								
+								</td>
+								<td></td>
+								<td colspan="2">
+                					<group>
+                                    	<field name="num_contract" attrs="{'readonly':[('state','in',('open','closed'))]}"/>
+                                    	<field name="num_resa" attrs="{'readonly':[('state','=','closed')]}"/>
+                                    	<field name="num_devis" attrs="{'readonly':[('state','=','closed')]}"/>
+                                    	<field name="voucher" attrs="{'readonly':[('state','=','closed')]}"/>
+                                	</group>
+								</td>
+							</tr>
+						</table>
+						<notebook>
+							<page string="Départ" autofocus="1">
+								<table width="100%">
+									<tr class="blue_bold">
+										<td colspan="3">Quoi?</td>
+										<td width="10%"></td>
+										<td colspan="2">Quand?</td>
+									</tr>
+									<tr>
+										<td>
+                							<label for="category_id"/>
+                               				<div>
+                                    			<field name="category_id" class="oe_inline"/>
+                                			</div>	
+										</td>
+										<td>
+                							<label for="nombre_jour"/>
+                               				<div>
+                                    			<field name="nombre_jour" class="oe_inline"/>
+                                			</div>	
+										</td>
+										<td>
+                							<label for="planned_odometer" />
+                               				<div>
+                                    			<field name="planned_odometer" class="oe_inline"/>
+                                			</div>	
+										</td>
+										<td></td>
+										<td>
+                							<label for="start_date" />
+                               				<div>
+                                    			<field name="start_date" class="oe_inline" />
+                                			</div>	
+										</td>
+										<td>
+                							<label for="expiration_date" />
+                               				<div>
+                                    			<field name="expiration_date" class="oe_inline"/>
+                                			</div>	
+										</td>
+										<td>
+											<button name="get_calculate_price" string="Calcul tarif" type="object" class="o_form_buttons_edit"/>
+										</td>
+									</tr>
+								</table>
+								<table width="50%">
+									<tr>
+										<td>
+                							<label for="src_agence_id" />
+                               				<div>
+                                    			<field name="src_agence_id" class="oe_inline"/>
+                                			</div>	
+										</td>
+										<td>
+                							<label for="dest_agence_id" />
+                               				<div>
+                                    			<field name="dest_agence_id" class="oe_inline"/>
+                                			</div>	
+										</td>
+									</tr>
+								</table>
+								<table width="70%">
+									<tr class="blue_bold">
+										<td colspan="2">Client / Conducteur principal</td>
+									</tr>
+									<tr>
+										<td>
+                							<label for="partner_id" />
+                               				<div>
+                                    			<field name="partner_id" class="oe_inline"/>
+                                			</div>	
+										</td>
+										<td>
+                							<label for="partner_balance" />
+                               				<div>
+                                    			<field name="partner_balance" class="oe_inline"/>
+                                			</div>	
+										</td>
+									</tr>
+									<tr>
+										<td>
+                							<label for="driver_id" />
+                               				<div>
+                                    			<field name="driver_id" class="oe_inline" attrs="{'required':[('driver_invoice_ok','!=',False)]}" context="{'default_driver':1,'default_type_client':'particuliers'}"/>
+                                			</div>	
+										</td>
+										<td>
+                							<label for="driver_invoice_ok" />
+                               				<div>
+                                    			<field name="driver_invoice_ok" class="oe_inline"/>
+                                			</div>	
+										</td>
+									</tr>
+								</table>
+								<table width="70%">
+									<tr>
+										<td colspan="5" class="blue_bold">Client National (Fact centralisée)</td>
+									</tr>
+									<tr class="blue_bold">
+										<td colspan="5">Matériel</td>
+									</tr>
+									<tr>
+										<td attrs="{'invisible':[('state','not in',('devis','reservation'))]}">
+											<button name="%(fleet.fleet_vehicle_move_planning_act2)d" string="P" type="action"  context="{'contract_id':active_id,'default_src_agence_id':src_agence_id,'default_category_id':category_id,'default_src_agence_name':src_agence_name,'default_category_name':category_name,'from_contract': 1}"/>
+										</td>
+										<td>
+                							<label for="vehicle_id" />
+                               				<div>
+                                    			<field name="vehicle_id" attrs="{'readonly':[('state','in',('waiting','open','closed'))]}" class="oe_inline" context="{'display_all':display_all,'start_date':start_date,'expiration_date':expiration_date,'contract_id':active_id}"/>
+                                			</div>	
+										</td>
+										<td>
+                							<label for="vehicle_license_plate" />
+                               				<div>
+                                    			<field name="vehicle_license_plate" class="oe_inline"/>
+                                			</div>
+										</td>
+										<td>
+                							<label for="vehicle_category_id" />
+                               				<div>
+                                    			<field name="vehicle_category_id" class="oe_inline"/>
+                                			</div>	
+										</td>
+										<td>
+                							<label for="vehicle_odometer" />
+                               				<div>
+                                    			<field name="vehicle_odometer" class="oe_inline"/>
+                                			</div>	
+										</td>
+										<td>
+                							<label for="display_all" invisible="1"/>
+                               				<div>
+                                    			<field name="display_all" class="oe_inline" invisible="1"/>
+                                			</div>	
+										</td>			
+									</tr>
+								</table>
+								<table width="70%">
+									<tr>
+										<td width="65%">
+											<group><field name="fuel_description" nolabel="1"/></group>
+										</td>
+										<td width="30%">
+											<group><field name="fuel"/></group>								
+										</td>
+										<td style="vertical-align: middle;">/8</td>
+									</tr>
+								</table>
+							</page>
+							<page string='Tarification client'>
+								<group>
+									<group>
+										<field name="pricelist_id" options="{'no_create':True}" />
+										<field name="item_id" options="{'no_create':True}" context="{'vehicle_categ_id':category_id,'nombre_jour':nombre_jour,'planned_odometer':planned_odometer}"/>
+									</group>
+									<group>
+										<!-- <button name="get_apply_yield" string="Tarif Yield" type="object"/> -->
+									</group>
+								</group>
+								<field name="prestation_ids" nolabel="1">
+									<tree editable="bottom">
+										<field name="vehicle_id" invisible="1"/>
+										<field name="product_id" context="{'default_prestation_ok':1}" domain="[('prestation_ok','=',True)]"/>
+										<field name="name" />
+										<field name="account_id" invisible="1"/>
+										<field name="product_qty" />
+										<field name="price_unit" />
+										<field name="ttc"/>
+										<field name="invoice_line_tax_ids" widget="many2many_tags" />
+										<field name="discount" />
+										<field name="price_untaxed" invisible="1"/>
+										<field name="amount_untaxed" />
+										<field name="amount_tax" />
+										<field name="amount_total" />
+										<field name="yield_id" />
+									</tree>
+								</field>
+								<group>
+									<group>
+										<field name="amount_untaxed" />
+										<field name="amount_tax" />
+										<field name="amount_total" />
+									</group>
+									<group>
+										<button name="get_update_price" string="Recalculer les tarifs" type="object" confirm="L'option 'Recalculer les tarifs' va changer les prix en fonction de la méthode de prix.Voulez-vous recalculer les tarifs?"/>
+									</group>
+								</group>
+								<group>
+									<group>
+										<field name="total_odometer" />
+										<field name="total_fuel_qty" />
+										<field name="total_odometer_relay" />
+									</group>
+									<group>
+										<button name="get_update_cumulative" string="Actualiser" type="object"/>
+									</group>
+								</group>
+							</page>
+							<page string='Tarification conducteur' attrs="{'invisible':[('driver_invoice_ok','=',False)]}">
+								<field name="driver_prestation_ids" nolabel="1">
+									<tree editable="bottom">
+										<field name="vehicle_id" invisible="1"/>
+										<field name="product_id" context="{'default_prestation_ok':1}" domain="[('prestation_ok','=',True)]"/>
+										<field name="name" />
+										<field name="account_id" invisible="1"/>
+										<field name="product_qty" />
+										<field name="price_unit" />
+										<field name="ttc"/>
+										<field name="invoice_line_tax_ids" widget="many2many_tags" />
+										<field name="discount" />
+										<field name="amount_untaxed" />
+										<field name="amount_tax" />
+										<field name="amount_total" />
+									</tree>
+								</field>
+								<group>
+									<group>
+										<field name="driver_amount_untaxed" />
+										<field name="driver_amount_tax" />
+										<field name="driver_amount_total" />
+									</group>
+									<group>
+										<button name="%(action_invoice_preview)d" type="action" string="Pré-facturation conducteur" context="{'driver_invoice':1,'default_contract_id':active_id,'default_vehicle_id':vehicle_id}" attrs="{'invisible':[('return_ok','=',False)]}"/>
+									</group>
+								</group>
+							</page>
+							<page string='Retour'>
+								<group string="Où?">
+								<table width="70%">
+									<tr>
+										<td><group><field name="ret_src_agence_id" /></group></td>
+									</tr>
+									<tr>
+										<td><group><field name="ret_dest_agence_id" /></group></td>
+									</tr>
+								</table>
+								</group>
+								<group string="Retour?">
+								<table width="100%">
+									<tr>
+										<td><group><field name="ret_date" /></group></td>
+										<td width="20%"></td>
+										<td></td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td><group><field name="ret_vehicle_odometer" /></group></td>
+										<td ><group><field name="ret_fuel1" /></group></td>
+										<td style="vertical-align: middle;">/8</td>
+										<td></td>
+										<td>
+											<group>
+                                    			<field name="ret_invoice_fuel1"/>
+                                			</group>	
+										</td>
+									</tr>
+									<tr>
+										<td><group><field name="ret_end_odometer" /></group></td>
+										<td><group><field name="ret_fuel2" /></group></td>
+										<td style="vertical-align: middle;">/8</td>
+										<td></td>
+										<td>
+											<group><field name="ret_invoice_fuel2"/></group>
+										</td>
+									</tr>
+									<tr>
+										<td><group><field name="ret_diff_odometer" /></group></td>
+										<td><field name="return_ok" invisible="1"/><button name="get_update_price2" string="Valider le retour" type="object" confirm="Voulez-vous recalculer les tarifs?"/></td>
+										<td></td>
+										<td></td>
+										<td></td>
+									</tr>
+								</table>	
+								</group>						
+							</page>
+						
+							<page string='Conducteurs'>
+								<field name="driver_ids" />
+								<group string='Téléphones / Contacts :'></group>
+								<field name="contact_ids">
+									<tree editable="1">
+										<field name="name" />
+										<field name="type" />
+										<field name="phone" />
+									</tree>
+								</field>
+							</page>
+							<page string='Changement de matériels'>
+								<field name="contract_vehicle_ids">
+									<tree editable="1" create="false" edit="false">
+										<field name="vehicle_id" />
+										<field name="odometer_start" />
+										<field name="odometer_stop" />
+										<field name="fuel_qty_start"/>
+										<field name="fuel_qty_stop"/>
+										<field name="odometer_variation" />
+										<field name="fuel_variation" />
+										<field name="start_date" />
+										<field name="expiration_date" />
+										<field name="special" />
+									</tree>
+								</field>
+							</page>
+						</notebook>
+                        <group>
+                            <field name="notes" nolabel="1" placeholder="Écrire ici toutes les informations relatives à ce contrat" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+	    <record model='ir.ui.view' id='fleet.fleet_vehicle_contract_form_planning'>
+            <field name="name">fleet.vehicle.contract.form.planning</field>
+            <field name="model">fleet.vehicle.contract</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_contract_form"/>
+            <field name="mode">primary</field>
+            <field name="priority" eval="100" />
+            <field name="arch" type="xml">
+            	<button name="%(fleet.fleet_vehicle_move_planning_act2)d" position="attributes">
+            		<attribute name='invisible'>1</attribute>
+            	</button>
+            </field>
+        </record>
+            
+        <record model='ir.ui.view' id='fleet.fleet_vehicle_contract_lld_form'>
+            <field name="name">fleet.vehicle.contract.form</field>
+            <field name="model">fleet.vehicle.contract</field>
+            <field name="priority" eval="2" />
+            <field name="arch" type="xml">
+                <form>
+                	<header>
+                        <button name="contract_open" states="devis" type="object" class="oe_highlight" string="Contrat" groups="fleet.fleet_group_manager"/>
+                        <button name="contract_closed" states="open" type="object" class="oe_highlight" string="Terminé" groups="fleet.fleet_group_manager"/>
+                    	
+                    	<button name="%(action_fleet_vehicle_contract_wizard)d" states="open" type="action" string="Avenant"/>
+                    	<button name="%(action_contract_vehicle_change_wizard_lld)d" states="open" type="action" string="Relais"/>
+                    	
+                    	<button name="contract_print" type="object" string="Imprimer"/>
+                    	<field name="state" widget="statusbar" nolabel="1" statusbar_visible="devis,open,closed" statusbar_colors='{"devis":"blue"}'/>
+                	</header>
+                    
+                    <sheet>
+                        <div class="oe_button_box">
+                            <button name="view_invoices"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-strikethrough"
+                                context="{'xml_id':'action_contract_invoice_tree'}"
+                                help="Toutes les factures liées à ce contrat" >
+                                <field name="contract_count" widget="statinfo" string="Factures"/>
+                            </button>
+                            <button name="return_action_to_open"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-tachometer"
+                                context="{'xml_id':'fleet_vehicle_move_act'}"
+                                help="Voir tous les mouvements du contrat" >
+                                <field name="move_count" widget="statinfo" string="Mouvements"/>
+                            </button>   
+                            <button name="view_fiche_r"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-tachometer"
+                                context="{'xml_id':'fleet_vehicle_contract_stop_act'}"
+                                help="Voir la fiche de restitution" >
+                                <field name="fiche_r_count" widget="statinfo" string="F. Restitution"/>
+                            </button>                         
+                        </div>
+                        <field name="currency_id" invisible="1"/>
+                    	<field name="contract_cd" invisible="1" />
+						<table width="100%">
+							<tr>
+								<td>
+                					<label for="type_id"/>
+                               		<div>
+                                    	<field name="type_id" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}" domain="[('contract_cd','=',contract_cd)]" context="{'default_contract_cd':contract_cd}"/>
+                                	</div>								
+								</td>
+								<td>
+                					<label for="num_contract" />
+                               		<div>
+                                    	<field name="num_contract" class="oe_inline" attrs="{'readonly':[('state','in',('open','closed'))]}"/>
+                                	</div>		
+								</td>
+								<td>
+                					<label for="avenant" />
+                               		<div>
+                                    	<field name="avenant" class="oe_inline"/>
+                                	</div>		
+								</td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>
+                					<label for="period_id" />
+                               		<div>
+                                    	<field name="period_id" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}"/>
+                                	</div>								
+								</td>
+								<td>
+                					<label for="date_envoi" />
+                               		<div>
+                                    	<field name="date_envoi" class="oe_inline"/>
+                                	</div>								
+								</td>
+								<td>
+                					<label for="date_signature" />
+                               		<div>
+                                    	<field name="date_signature" class="oe_inline"/>
+                                	</div>								
+								</td>
+								<td>
+                					<label for="agence_id" />
+                               		<div>
+                                    	<field name="agence_id" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}"/>
+                                	</div>								
+								</td>
+								<td>
+                					<label for="company_id" />
+                               		<div>
+                                    	<field name="company_id" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}"/>
+                                	</div>								
+								</td>
+							</tr>
+						</table>
+						<notebook>
+							<page string="Désignation" autofocus="1">
+								<table width="100%">
+									<tr>
+										<td>
+                							<label for="start_date"/>
+                               				<div>
+                                    			<field name="start_date" widget="date" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}"/>
+                                			</div>	
+										</td>
+										<td>
+                							<label for="lld_nombre_mois" string='Durée :'/>
+                               				<div>
+                                    			<field name="lld_nombre_mois" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}"/>
+                                			</div>	
+										</td>
+										<td>
+                							<label for="expiration_date" />
+                               				<div>
+                                    			<field name="expiration_date" widget="date" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}"/>
+                                			</div>	
+										</td>
+										<td>
+                							<label for="frequency" />
+                               				<div>
+                                    			<field name="frequency" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}"/>
+                                			</div>	
+										</td>
+									    <td>
+                							<label for="planned_odometer" string='Cpt Prévu :'/>
+                               				<div>
+                                    			<field name="planned_odometer" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}"/>
+                                			</div>	
+										</td>
+									    <td>
+                							<label for="km_sup_price_unit"/>
+                               				<div>
+                                    			<field name="km_sup_price_unit" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}"/>
+                                			</div>	
+										</td>
+										<td></td>
+										<td></td>
+										<td style="width:10%;">
+									        <label for="base"/>
+                               				<div>
+                                    			<field name="base" class="oe_inline"/>
+                                			</div>
+									        <label for="valeur_residuelle" attrs="{'readonly':[('state','=','closed')]}"/>
+                               				<div>
+                                    			<field name="valeur_residuelle" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}"/>
+                                			</div>	
+										</td>
+									</tr>
+								</table>
+								<table width="100%">
+									<tr class="blue_bold">
+										<td colspan="2">Client / Conducteur / Tiers</td>
+									</tr>
+									<tr>
+										<td>
+                							<label for="partner_id" />
+                               				<div>
+                                    			<field name="partner_id" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}"/>
+                                			</div>	
+										</td>
+										<td>
+                							<label for="payment_mode_id" />
+                               				<div>
+                                    			<field name="payment_mode_id" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}"/>
+                                			</div>	
+										</td>
+										<td>
+                							<label for="property_payment_term_id" />
+                               				<div>
+                                    			<field name="property_payment_term_id" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}"/>
+                                			</div>	
+										</td>
+										<td></td>
+										<td style="width:10%;">
+									        <label for="frais_dossier"/>
+                               				<div>
+                                    			<field name="frais_dossier" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}"/>
+                                			</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+                							<label for="driver_id" />
+                               				<div>
+                                    			<field name="driver_id" class="oe_inline" context="{'default_driver':1,'default_type_client':'particuliers'}" attrs="{'readonly':[('state','=','closed')]}"/>
+                                			</div>	
+										</td>
+										<td>
+                							<label for="driver_collectif" />
+                               				<div>
+                                    			<field name="driver_collectif" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}"/>
+                                			</div>	
+										</td>
+										<td>
+                							<label for="driver_regroupement" />
+                               				<div>
+                                    			<field name="driver_regroupement" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}"/>
+                                			</div>	
+										</td>
+										<td></td>
+										<td style="width:10%;">
+									        <label for="rate_fi"/>
+                               				<div>
+                                    			<field name="rate_fi" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}"/>
+                                			</div>	
+										</td>
+									</tr>
+									<tr>
+										<td>
+                							<label for="user_id" />
+                               				<div>
+                                    			<field name="user_id" class="oe_inline"/>
+                                			</div>	
+										</td>
+										<td>
+										</td>
+										<td>
+                							<label for="ref" />
+                               				<div>
+                                    			<field name="ref" class="oe_inline"/>
+                                			</div>	
+										</td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>
+                							<label for="purchaser_id" />
+                               				<div>
+                                    			<field name="purchaser_id" class="oe_inline"/>
+                                			</div>	
+										</td>
+										<td>
+                							<label for="purchase_price" />
+                               				<div>
+                                    			<field name="purchase_price" class="oe_inline"/>
+                                			</div>	
+										</td>
+										<td>
+                							<label for="agence_id2" />
+                               				<div>
+                                    			<field name="agence_id2" class="oe_inline"/>
+                                			</div>	
+										</td>
+										<td></td>
+										<td>
+									        <label for="montant_loyer"/>
+                               				<div>
+                               					<button name="compute_montant_loyer" string=">" type="object" class="oe_inline"/> 
+                                    			<field name="montant_loyer" class="oe_inline"/>
+                                			</div>	
+										</td>
+									</tr>
+								</table>
+								<table width="70%">
+									<tr class="blue_bold">
+										<td colspan="4">Matériel</td>
+									</tr>
+									<tr>
+										<td>
+                							<label for="vehicle_id" />
+                               				<div>
+                                    			<field name="vehicle_id" class="oe_inline" attrs="{'readonly':[('state','in',('waiting','open','closed'))]}"/>
+                                			</div>	
+										</td>
+										<td>
+                							<label for="vehicle_license_plate" />
+                               				<div>
+                                    			<field name="vehicle_license_plate" class="oe_inline" attrs="{'readonly':[('state','in',('open','closed'))]}"/>
+                                			</div>
+										</td>
+										<td>
+                							<label for="vehicle_libelle" />
+                               				<div>
+                                    			<field name="vehicle_libelle" class="oe_inline"/>
+                                			</div>	
+										</td>
+										<td>
+                							<label for="vehicle_odometer" />
+                               				<div>
+                                    			<field name="vehicle_odometer" class="oe_inline" attrs="{'readonly':[('state','in',('open','closed'))]}"/>
+                                			</div>	
+										</td>
+										<td>
+                							<label for="vehicle_position_id" />
+                               				<div>
+                                    			<field name="vehicle_position_id" class="oe_inline" domain="[('vehicle_id','=','read_only')]" context="{'default_vehicle_id':vehicle_id,'default_contract_id':active_id}"/>
+                                			</div>	
+										</td>
+									</tr>
+								</table>
+								<group string="Consommation kilométrique" col="6">
+									<field name="km_frequency" />
+									<field name="km_ecart" />
+									<field name="auto_ok" />
+								</group>
+							</page>
+							<page string='Tarification'>
+								<field name="prestation_ids" nolabel="1">
+									<tree editable="bottom">
+										<field name="vehicle_id" invisible="1"/>
+										<field name="product_id" context="{'default_prestation_ok':1}" domain="[('prestation_ok','=',True)]"/>
+										<field name="name" />
+										<field name="account_id" invisible="1"/>
+										<field name="product_qty" />
+										<field name="price_unit" />
+										<field name="ttc"/>
+										<field name="invoice_line_tax_ids" widget="many2many_tags" />
+										<field name="discount" />
+										<field name="amount_untaxed" />
+										<field name="amount_tax" />
+										<field name="amount_total" />
+										<field name="date_start" attrs="{'required':[('date_stop','!=',False)]}"/>
+										<field name="date_stop" attrs="{'required':[('date_start','!=',False)]}"/>
+									</tree>
+								</field>
+								<group>
+									<group>
+										<field name="amount_untaxed" />
+										<field name="amount_tax" />
+										<field name="amount_total" />
+									</group>
+									<group>
+										<button name="get_update_price" string="Recalculer les tarifs" type="object" confirm="L'option 'Recalculer les tarifs' va changer les prix en fonction de la méthode de prix.Voulez-vous recalculer les tarifs?"/>
+									</group>
+								</group>
+							</page>
+							<page string='Retour'>
+									<group string="Quand">
+									</group>
+									<table width="70%">
+										<tr>
+											<td width="60%">
+										    	<label for="ret_date" />
+                               					<div>
+                                    				<field name="ret_date" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}"/>
+                                				</div>											
+											</td>
+											<td width="40%">
+										    	<label for="lld_ret_ecart_jour" />
+                               					<div>
+                                    				<field name="lld_ret_ecart_jour" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}"/>
+                                				</div>											
+											</td>											
+										</tr>
+										<tr>
+											<td>
+										    	<label for="lld_ret_new_end" />
+                               					<div>
+                                    				<field name="lld_ret_new_end" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}"/>
+                                				</div>											
+											</td>
+											<td>
+											</td>											
+										</tr>
+									</table>
+								    <group string="Bilan compteur">
+								    </group>
+									<table width="70%">
+										<tr>
+											<td width="60%">
+										    	<label for="ret_end_odometer" />
+                               					<div>
+                                    				<field name="ret_end_odometer" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}"/>
+                                				</div>											
+											</td>
+											<td width="40%">
+										    	<label for="ret_diff_odometer" />
+                               					<div>
+                                    				<field name="ret_diff_odometer" class="oe_inline"/>
+                                				</div>											
+											</td>											
+										</tr>
+										<tr>
+											<td>
+										    	<label for="ret_ecart_km" />
+                               					<div>
+                                    				<field name="ret_ecart_km" class="oe_inline" attrs="{'readonly':[('state','=','closed')]}"/>
+                                				</div>											
+											</td>
+											<td></td>
+										</tr>
+									</table>
+								    <group string="Où">
+								    </group>
+									<table width="70%">
+										<tr>
+											<td>
+										    	<label for="ret_dest_agence_id" string='Agence de retour :'/>
+                               					<div>
+                                    				<field name="ret_dest_agence_id" class="oe_inline"/>
+                                				</div>											
+											</td>											
+										</tr>
+									</table>
+							</page>
+							
+							<page string='Client'>
+								<group col="4">
+									<field name="partner_ref"/>
+									<field name="partner_name"/>
+								</group>	
+								<group col="4">
+									<field name="partner_street"/>
+									<field name="partner_street2"/>
+								</group>
+								<group col="4">
+									<field name="partner_zip"/>
+									<field name="partner_city_id"/>
+								</group>		
+								<group>
+									<field name="partner_country_id"/>
+								</group>
+								<group string="Téléphones / Contacts :">
+									<field name="partner_contact_ids" nolabel="1">
+										<tree editable="1">
+											<field name="type" />
+											<field name="phone" />
+											<field name="name" string='Libellé'/>
+										</tree>
+									</field>
+								</group>
+				                <group string="Sélectionner le RIB à utiliser pour la facture :">
+                    				<field name="partner_bank_ids" nolabel="1">
+                        				<tree string="Bank Details" create="false">
+                        					<field name="use" />
+                        					<field name="rib_id" invisible="1"/>
+                        					<field name="sequence"/>
+                        					<field name="bank_name"/>
+                            				<field name="bank_code"/>
+                            				<field name="office"/>
+                            				<field name="acc_number" />
+                            				<field name="key" />
+                            				<field name="partner_id"/>
+                        				</tree>
+                    				</field>
+								</group>
+								<group col="4">
+									<field name="recurring_last_date" attrs="{'readonly':[('state','=','closed')]}"/>
+									<field name="echeance" attrs="{'readonly':[('state','=','closed')]}"/>
+									<field name="contract_date_stop" />
+									<field name="avenant_date_start" />
+									<field name="contract_id" />
+								</group>
+							</page>	
+							<page string="Mensualité">
+								<group>
+									<group>
+										<field name="frequency_type" />
+									</group>
+								</group>
+							</page>		
+							<page string='Relais'>
+								<field name="contract_vehicle_ids">
+									<tree editable="1" create="false" edit="false">
+										<field name="vehicle_id" />
+										<field name="odometer_start" />
+										<field name="odometer_stop" />
+										<field name="fuel_qty_start"/>
+										<field name="fuel_qty_stop"/>
+										<field name="odometer_variation" />
+										<field name="fuel_variation" />
+										<field name="start_date" />
+										<field name="expiration_date" />
+										<field name="special" />
+									</tree>
+								</field>
+							</page>	
+						</notebook>
+                        <group>
+                            <field name="notes" nolabel="1" placeholder="Écrire ici toutes les informations relatives à ce contrat" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model='ir.ui.view' id='fleet_vehicle_contract_lld_2_form'>
+            <field name="name">fleet.vehicle.contract.form</field>
+            <field name="model">fleet.vehicle.contract</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_contract_lld_form" />
+            <field name="groups_id" eval="[(4, ref('base.oxsft_group_accounting'))]"/>
+            <field name="arch" type="xml">	
+            	<field name="lld_nombre_mois" position="attributes">
+            		<attribute name="readonly">True</attribute>
+            	</field>
+            	<field name="start_date" position="attributes">
+            		<attribute name="readonly">True</attribute>
+            	</field>
+            	<field name="expiration_date" position="attributes">
+            		<attribute name="readonly">True</attribute>
+            	</field>
+            </field>
+        </record>
+
+        <record model='ir.ui.view' id='fleet.fleet_vehicle_contract_lld2_form'>
+            <field name="name">fleet.vehicle.contract.form</field>
+            <field name="model">fleet.vehicle.contract</field>
+            <field name="mode">primary</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_contract_lld_form" />
+            <field name="priority" eval="1000" />
+            <field name="arch" type="xml">	
+            	<xpath expr="//page[position()=last()]" position="after">
+			     	<page string='Sous contrats'>
+				    	<group invisible="1">
+							<field name="parent_id" />
+						</group>
+						<field name="contract_childs" context="{'form_view_ref':'fleet.fleet_vehicle_contract_lld_form','tree_view_ref':'fleet.fleet_vehicle_contract_lld_tree'}"/>
+					</page>            	
+            	</xpath>
+            </field>
+        </record>
+           
+        <record model='ir.ui.view' id='fleet.fleet_vehicle_contract_lld_loueur_form'>
+            <field name="name">fleet.vehicle.contract.form</field>
+            <field name="model">fleet.vehicle.contract</field>
+            <field name="mode">primary</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_contract_lld_form" />
+            <field name="priority" eval="1000" />
+            <field name="arch" type="xml">	
+            	<label for="partner_id" position="attributes">
+            		<attribute name="string">Loueur</attribute>
+            	</label>
+            </field>
+        </record>
+
+
+        <record model='ir.ui.view' id='fleet.fleet_vehicle_contract_tree'>
+            <field name="name">fleet.vehicle.contract.tree</field>
+            <field name="model">fleet.vehicle.contract</field>
+            <field name="arch" type="xml">
+                <tree>
+                	<field name="type_id" string="Type de contrat"/>
+                	<field name="num_devis" string="Devis"/>
+                	<field name="num_resa" string="Réservation"/>
+                	<field name="num_contract" string="N° contrat"/>
+                    <field name="start_date" string="Départ le"/>
+                    <field name="expiration_date" string="Retour prévu le"/>
+                    <field name="vehicle_id" string="Parc"/>
+                    <field name="partner_id" string="Client"/>
+                    <field name="driver_id" string="Conducteur"/>
+                    <field name="state"/>
+                    <field name="company_id" string="Société"/>
+                    <field name="src_agence_id" string="Agence"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model='ir.ui.view' id='fleet.fleet_vehicle_contract_lld_tree'>
+            <field name="name">fleet.vehicle.contract.tree</field>
+            <field name="model">fleet.vehicle.contract</field>
+            <field name="arch" type="xml">
+                <tree>
+                	<field name="type_id" string="Type de contrat"/>
+                	<field name="num_contract" string="N° contrat"/>
+                	<field name="avenant" string="Avenant"/>
+                    <field name="start_date" widget="date" string="Départ le"/>
+                    <field name="expiration_date" widget="date" string="Retour prévu le"/>
+                    <field name="vehicle_id" string="Parc"/>
+                    <field name="partner_id" string="Client"/>
+                    <field name="driver_id" string="Conducteur"/>
+                    <field name="state"/>
+                    <field name="company_id" string="Société"/>
+                    <field name="src_agence_id" string="Agence"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model='ir.ui.view' id='fleet.fleet_vehicle_contract_lld_loueur_tree'>
+            <field name="name">fleet.vehicle.contract.tree</field>
+            <field name="model">fleet.vehicle.contract</field>
+            <field name="mode">primary</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_contract_lld_tree" />
+            <field name="arch" type="xml">	
+            	<field name="partner_id" position="attributes">
+            		<attribute name="string">Loueur</attribute>
+            	</field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="fleet.fleet_vehicle_contract_graph">
+           <field name="name">fleet.vehicle.contract.graph</field>
+           <field name="model">fleet.vehicle.contract</field>
+           <field name="arch" type="xml">
+                <graph string="Contract Costs Per Month" type="bar" stacked="True">
+                    <field name="date" type="row"/>
+                    <field name="vehicle_id" type="row"/>
+                    <field name="amount" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+		<record model="ir.ui.view" id="fleet.fleet_vehicle_contract_calendar">
+    		<field name="name">fleet.vehicle.contract.calendar</field>
+        	<field name="model">fleet.vehicle.contract</field>
+        	<field name="arch" type="xml">
+            	<calendar color="vehicle_id" date_start="start_date" date_stop="expiration_date" string="Planning">
+                	<field name="vehicle_id"/>
+                    <field name="vehicle_category_id"/>
+                    <field name="partner_id"/>
+                </calendar>
+            </field>
+    	</record>
+
+       <record model="ir.ui.view" id="fleet.fleet_vehicle_contract_gantt">
+            <field name="name">fleet.vehicle.contract.gantt</field>
+            <field name="model">fleet.vehicle.contract</field>
+            <field name="arch" type="xml">
+                <gantt date_start="start_date" date_stop="expiration_date" default_group_by="vehicle_id" color="vehicle_id" string="Planning">
+                </gantt>
+            </field>
+        </record>
+
+		<record model="ir.ui.view" id="fleet.fleet_vehicle_contract_search">
+            <field name="name">fleet.vehicle.contract.search</field>
+            <field name="model">fleet.vehicle.contract</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search>
+                	<field string="Référence" name="name"/>
+                	<group expand="0" string="Grouper par...">
+                    	<filter string="Véhicule" domain="[]" context="{'group_by':'vehicle_id'}"/>
+                    	<filter string="Début" domain="[]" context="{'group_by':'start_date'}"/>
+                    	<filter string="Fin" domain="[]" context="{'group_by':'expiration_date'}"/>
+                	</group>
+              </search>
+            </field>
+        </record>
+
+        <record model='ir.ui.view' id='fleet.fleet_vehicle_contract_type_form'>
+            <field name="name">fleet.vehicle.contract.type.form</field>
+            <field name="model">fleet.vehicle.contract.type</field>
+            <field name="arch" type="xml">
+                <form>
+                	<group col="4">
+                		<field name="code"/>
+                		<field name="name"/>
+                		<field name="contract_cd"/>
+                	</group>
+                </form>
+            </field>
+        </record>
+        <record model='ir.ui.view' id='fleet.fleet_vehicle_contract_type_tree'>
+            <field name="name">fleet.vehicle.contract.type.tree</field>
+            <field name="model">fleet.vehicle.contract.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                	<field name="code"/>
+                	<field name="name"/>
+                	<field name="contract_cd"/>
+                </tree>
+            </field>
+        </record>
+ 
+ 		<!--  Gestion des cautions -->
+
+        <record model='ir.ui.view' id='fleet.fleet_vehicle_contract_bail_tree'>
+            <field name="name">fleet.vehicle.contract.bail.tree</field>
+            <field name="model">fleet.vehicle.contract.bail</field>
+            <field name="arch" type="xml">
+                <tree editable="1">
+                	<field name="company_id"/>
+                	<field name="agence_id"/>
+                	<field name="state"/>
+                	<field name="partner_id"/>
+                	<field name="amount" sum="Montant total"/>
+                	<field name="payment_mode_id"/>
+                	<field name="notes"/>
+                	<field name="date"/>
+                	<field name="date_due"/>
+                	<field name="validity_end"/>
+                	<field name="card"/>
+                	<field name="nature"/>
+                	<field name="code"/>
+                </tree>
+            </field>
+        </record>
+
+		<record model="ir.ui.view" id="fleet.fleet_vehicle_contract_bail_search">
+            <field name="name">fleet.vehicle.contract.bail.search</field>
+            <field name="model">fleet.vehicle.contract.bail</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search>
+                	<field name="state"/>
+                	<field name="partner_id"/>
+                	<field name="payment_mode_id"/>
+                	<field name="agence_id"/>
+                	<field name="date_due"/>
+                	<field name="date"/>
+                	<field name="nature"/>
+                	<field name="contract_id"/>
+                	<group expand="0" string="Grouper par...">
+                		<filter string="Contrat" domain="[]" context="{'group_by':'contract_id'}"/>
+                    	<filter string="Règlement" domain="[]" context="{'group_by':'payment_mode_id'}"/>
+                    	<filter string="Etat" domain="[]" context="{'group_by':'state'}"/>
+                    	<filter string="Identité" domain="[]" context="{'group_by':'partner_id'}"/>
+                    	<filter string="Agence" domain="[]" context="{'group_by':'agence_id'}"/>
+                    	<filter string="Opération" domain="[]" context="{'group_by':'date'}"/>
+                    	<filter string="Date limite" domain="[]" context="{'group_by':'date_due'}"/>
+                    	<filter string="Carte" domain="[]" context="{'group_by':'card'}"/>
+                    	<filter string="Nature" domain="[]" context="{'group_by':'nature'}"/>
+                	</group>
+              </search>
+            </field>
+        </record>
+
+        <record model='ir.ui.view' id='fleet.fleet_vehicle_contract_stop_form'>
+            <field name="name">fleet.vehicle.contract.stop.form</field>
+            <field name="model">fleet.vehicle.contract.stop</field>
+            <field name="arch" type="xml">
+                <form create="false">
+                	<sheet>
+                		<group col="4">
+                			<field name="contract_id" context="{'form_view_ref':'fleet.fleet_vehicle_contract_lld_form','tree_view_ref':'fleet.fleet_vehicle_contract_lld_tree'}"/>
+                			<field name="partner_id"/>
+                			<field name="driver_id"/>
+                			<field name="vehicle_id" />
+                			<field name="license_plate" />
+                			<field name="libelle" />
+                			<field name="type_id" />
+                			<field name="address"/>
+                			<field name="invoice_id" attrs="{'invisible':[('invoice_id','=',False)]}"/>
+                		</group>
+                		<center>
+                			<button name="action_invoice_create" string="Facturer" type="object" attrs="{'invisible':[('invoice_id','!=',False)]}"/>
+                		</center>
+                		<notebook>
+                			<page string="Désignation">
+                				<field name="currency_id" invisible="1"/>
+                				<group col="6">
+                					<field name="start_date" />
+                					<field name="duree" />
+                					<field name="expiration_date" />
+                					<field name="ret_date" />
+
+                					<field name="ret_ecart_date" />
+                					<field name="vehicle_odometer" />
+                					<field name="ret_planned_odometer" />
+
+                					<field name="ret_end_odometer" />
+                					<field name="ret_ecart_km" />
+                					<field name="km_ecart" />
+                					
+                						
+                					<field name="km_sup_price_unit" />
+                					<field name="amount_total" />
+                					<field name="amount_untaxed_sum" />
+                					
+                					
+                				</group>
+                				<group col="6">
+                					<field name="ir_amount" />
+                					<field name="formula_id" />
+                					<button name="action_ir_amount" string="Calculer" type="object"/>
+                				</group>
+                			</page>
+                			<page string="Dégats">
+                				<field name="sinister_ids">
+                					<tree editable="1">
+                						<field name="libelle_id" />
+                						<field name="amount" />
+                						<field name="garantie" />
+                						<field name="amount_total" />
+                					</tree>
+                				</field>
+                			</page>
+                		</notebook>
+                	</sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record model='ir.ui.view' id='fleet.fleet_vehicle_contract_stop_config_form'>
+            <field name="name">fleet.vehicle.contract.stop.config.form</field>
+            <field name="model">fleet.vehicle.contract.stop.config</field>
+            <field name="arch" type="xml">
+                <form>
+                	<group>
+                		<field name="name" />
+                		<field name="formula" />
+                	</group>
+                </form>
+            </field>
+       </record>
+	</data>
+</odoo>

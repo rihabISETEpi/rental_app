@@ -1,0 +1,2 @@
+id,name,model_id:id,perm_read,perm_write,perm_create,perm_unlink,group_id:id
+access_model_o_table_vehicle_cost_report,o_table_vehicle_cost,model_o_table_vehicle_cost,1,1,1,0,

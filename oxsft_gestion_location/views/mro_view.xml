@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+        <record id="purchase.purchase_action" model="ir.actions.act_window">
+            <field name="name">Achats</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.order</field>
+            <field name="context">{}</field>
+            <field name="view_mode">tree,form,graph,calendar</field>
+            <field name="search_view_id" ref="purchase.view_purchase_order_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a request for quotation.
+              </p><p>
+                The quotation contains the history of the discussion/negotiation
+                you had with your supplier. Once confirmed, a request for
+                quotation is converted into a purchase order.
+              </p><p>
+                Most propositions of purchase orders are created automatically
+                by Odoo based on inventory needs.
+              </p>
+            </field>
+        </record>
+
+    <record id="mro_request_form_view_inherit1" model="ir.ui.view">
+            <field name="name">mro.request.form.inherit1</field>
+            <field name="model">mro.request</field>
+            <field name="inherit_id" ref="mro.mro_request_form_view"/>
+            <field name="priority" eval="1" />
+            <field name="arch" type="xml">
+		        <field name="asset_id" position="replace">
+		           <field name="asset_id"  required="0"/>
+		        </field>
+		        <field name="execution_date" position="after">
+		           <field name="vehicle_id" required="1"/>
+		        </field>
+	    </field>
+   </record>
+
+
+
+   <record id="mro_order_filter_view" model="ir.ui.view">
+        <field name="name">mro.order.search.inherited</field>
+        <field name="model">mro.order</field>
+        <field name="inherit_id" ref="mro.mro_order_search"/>
+        <field name="arch" type="xml">
+				<xpath expr="/search" position="inside">
+					<group expand="0" string="Group By...">
+                        <filter string="Matériel" domain="[]" context="{'group_by':'vehicle_id'}"/>
+                    </group>
+				</xpath>
+        </field>
+    </record>
+
+    <record id="mro_order_form_view" model="ir.ui.view">
+            <field name="name">mro.order.form.inherit</field>
+            <field name="model">mro.order</field>
+            <field name="priority" eval="1" />
+            <field name="inherit_id" ref="mro.mro_order_form_view" />
+            <field name="arch" type="xml">
+            	<button name="button_confirm_order" position="replace">
+            		<button name="button_confirm_order" states="draft" string="Confirmer la maintenance" class="oe_highlight"/>
+            	</button>
+            	<button name="action_cancel" position="after">
+					<button name="%(action_purchase_order_wizard)d" string="Bon d’accord" type="action" attrs="{'invisible': [('state','=','cancel')]}"/>
+                    <button name="%(account_invoice_wizard_action)d" string="Refacturation client " type="action" attrs="{'invisible': [('state','=','cancel')]}"/>
+                    <button name="action_view_purchase" string="Voir les bons d’accord" type="object" class="oe_highlight"
+                            attrs="{'invisible': [('purchase_exists', '=', False)]}" groups="base.group_user"/>
+                    <button name="action_view_invoice" string="Voir les factures client" type="object" class="oe_highlight"
+                            attrs="{'invisible': [('invoice_exists', '=', False)]}" groups="base.group_user"/>                          
+            	</button>
+            	<xpath expr="//div[@class='oe_title'][position()=1]" position="replace">
+                        <div class="oe_title">
+                            <h1>Maintenance <field name="name" class="oe_inline" readonly="1"/></h1>
+                        </div>
+            	</xpath>
+            	<field name="asset_id" position="attributes">
+            		<attribute name="invisible">1</attribute>
+            	</field>
+            	<field name="description" position="replace">
+            	</field>
+            	<label for="task_id" position="replace">
+            	</label>
+            	<field name="task_id" position="replace">
+            	</field>
+            	<field name="maintenance_type" position="replace">
+            		<field name="maintenance_type" string="Type de maintenance"/>
+                	<field name="service_type_id"/>
+                    <field name="description"/>
+		            <field name="vehicle_id" required="1"/>
+		            <field name="km_start" string="Km" attrs="{'readonly':[('state','in',('done','cancel'))]}"/>
+		    	    <field name="alert_id" string="Alerte liée" options="{'no_create':True}" attrs="{'readonly':[('state','in',('done','cancel'))]}"/>
+            		<field name="assistance" invisible="1"/>
+            	</field>
+            	<field name="date_planned" position="replace">
+            		<field name="user_id"/>
+            		<field name="date_planned" invisible="1"/>
+            	</field>
+            	<field name="date_scheduled" position="attributes">
+            		<attribute name="invisible">1</attribute>
+            	</field>
+            	<field name="date_execution" position="attributes">
+            		<attribute name="invisible">1</attribute>
+            	</field>
+            	<field name="origin" position="attributes">
+            		<attribute name="string">Source</attribute>
+            	</field>
+            	<field name="date_execution" position="after">
+                	<field name="date_start" attrs="{'readonly':[('state','in',('done','cancel'))]}"/>
+                    <field name="duration" string="Durée en jour" attrs="{'readonly':[('state','in',('done','cancel'))]}"/>
+                    <field name="date_stop" required="1" attrs="{'readonly':[('state','in',('done','cancel'))]}"/>
+            	</field>
+            	<field name="origin" position="after">
+            		<field name="vehicle_position_id" domain="[('vehicle_id','=','read_only')]" attrs="{'readonly':[('state','in',('done','cancel'))]}" context="{'default_vehicle_id':vehicle_id,'default_mro_id':active_id,'default_date_start':date_start,'default_date_stop':date_stop}"/>
+            	</field>
+            	<xpath expr="//form/sheet/notebook/page[position()=1]" position="attributes">
+            		<attribute name="string">Prestations</attribute>
+            	</xpath>
+				<xpath expr="//form/sheet/notebook/page[position()=1]/group[position()=1]" position="replace">
+					<group string="Prestations prévues" states="draft,released,ready,done,parts_except,cancel">
+                    	<field name="parts_lines" nolabel="1" context="{'default_categ_id': context.get('default_categ_id')}">
+                        	<tree string="Planned Parts" editable="bottom">
+                            	<field name="parts_id" string="Produit" domain="[('categ_id','=','Parts')]" context="{'default_categ_id': context.get('default_categ_id')}"/>
+                                <field name="name"/>
+                                <field name="parts_qty" string="Quantité"/>
+                                <field name="parts_uom" groups="product.group_uom"/>
+                                <field name="price_unit" string="Prix d'achat"/>
+                    			<field name="price_unit2" />
+                    			<field name="product_qty_available"/>
+                    			<field name="amount_total" />
+                    			<field name="amount_total2" />
+                    			<field name="state" invisible="1"/>
+                    			<field name="to_invoice" />
+                    			<field name="partner_id" string="Client à refact."/>
+                    			<field name="supplier_id" />
+                            </tree>
+                        </field>
+                    </group>
+				</xpath>
+            	<xpath expr="//form/sheet/notebook/page[position()=1]/group[position()=1]/field[@name='parts_lines']/tree/field[@name='parts_id']" position="replace">
+            		<field name="parts_id" domain="[('categ_id','=',context.get('default_categ_id'))]" context="{'default_categ_id': context.get('default_categ_id')}"/>
+            	</xpath>
+				<xpath expr="//form/sheet/notebook/page[position()=4]" position="inside">
+					<field name="purchase_exists" invisible="1"/>
+                    <field name="invoice_exists" invisible="1"/>
+                	<separator string="Description for Operations"/>
+					<field name="operation_ids" attrs="{'readonly':[('state','=','done')]}">
+				   		<tree>
+							<field name="employee_id"/>
+							<field name="hours"/>
+							<field name="description"/>
+				    	</tree>
+				    	<form>
+				    		<group>
+								<field name="employee_id"/>
+								<field name="hours"/>
+								<field name="description"/>
+							</group>
+				    	</form>
+					</field>
+				</xpath>
+            </field>
+    </record>
+   
+    <record id="mro_order_form_view2" model="ir.ui.view">
+            <field name="name">mro.order.assistance.form.inherit</field>
+            <field name="model">mro.order</field>
+            <field name="mode">primary</field>
+            <field name="inherit_id" ref="mro_order_form_view" />
+            <field name="arch" type="xml">
+            	<button name="button_confirm_order" position="replace">
+            		<button name="button_confirm_order" states="draft" string="Confirmer" class="oe_highlight"/>
+            	</button>
+            	<xpath expr="//div[@class='oe_title'][position()=1]" position="replace">
+                        <div class="oe_title">
+                            <h1>Assistance <field name="name" class="oe_inline" readonly="1"/></h1>
+                        </div>
+            	</xpath>
+            	<field name="maintenance_type" position="attributes">
+            		<attribute name="string">Type d'assistance</attribute>
+            	</field>
+            	<xpath expr="//page[position()=last()]" position="after">
+            		<page string="Localisation">
+            			<group col="4">
+            				<field name="address" />
+            				<button name="open_map" string="Google Map" type="object" class="oe_link or_right"/>
+            				<button name="open_map3" string="Ma position" type="object" class="oe_link or_right"/>
+            			</group>
+            			<group col="6">
+            				<field name="latitude" />
+            				<field name="longitude" />
+            				<button name="open_map2" string="Google Map" type="object" class="oe_link or_right"/>
+            			</group>
+            		</page>
+            	</xpath>
+<!--             	<field name="alert_id" position="attributes">
+            		<attribute name="invisible">1</attribute>
+            	</field>
+            	<field name="maintenance_type" position="attributes">
+            		<attribute name="invisible">1</attribute>
+            	</field> -->
+            </field>  
+	</record>
+
+    <record id="mro_order_tree_view" model="ir.ui.view">
+            <field name="name">mro.order.location.tree</field>
+            <field name="model">mro.order</field>
+            <field name="inherit_id" ref="mro.mro_order_tree_view" />
+            <field name="arch" type="xml">
+            	<field name="date_execution" position="replace">
+            		<field name="alert_id" string="Alerte liée"/>
+            		<field name="date_start" />
+            		<field name="duration" string="Durée en jour"/>
+            		<field name="date_stop" />
+            	</field>
+            	<field name="asset_id" position="replace">
+            		<field name="asset_id" invisible="1"/>
+            		<field name="vehicle_id"/>
+            	</field>
+            </field>
+    </record> 
+
+    <record id="fleet.action_orders" model="ir.actions.act_window">
+            <field name="name">Maintenances</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">mro.order</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('assistance','=',False)]</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="context" eval="{'default_assistance':0,'default_categ_id': ref('mro.product_category_mro')}"/>
+    </record>
+        
+    <record id="act_mro_order_tree_view" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="mro.mro_order_tree_view"/>
+            <field name="act_window_id" ref="fleet.action_orders"/>
+     </record>
+     <record id="act_mro_order_form_view" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="mro_order_form_view"/>
+            <field name="act_window_id" ref="fleet.action_orders"/>
+     </record>
+     <record id="act_mro_order_calendar_view" model="ir.actions.act_window.view">
+            <field eval="3" name="sequence"/>
+            <field name="view_mode">calendar</field>
+            <field name="view_id" ref="mro.mro_order_calendar_view"/>
+            <field name="act_window_id" ref="fleet.action_orders"/>
+    </record>
+
+    <menuitem name="Ordres de maintenance"
+            action="fleet.action_orders"
+            id="mro.menu_mro_order"
+            parent="mro.menu_mro_maintenance"
+            sequence="10"/>
+
+	<!-- DEBUT MENU ASSISTANCE -->
+    <record id="fleet.action_orders2" model="ir.actions.act_window">
+            <field name="name">Assistances</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">mro.order</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('assistance','!=',False)]</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="context" eval="{'default_assistance':1,'default_categ_id': ref('mro.product_category_mro')}"/>
+    </record>
+        
+    <record id="act_mro_order_tree_view2" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="mro.mro_order_tree_view"/>
+            <field name="act_window_id" ref="fleet.action_orders2"/>
+     </record>
+     <record id="act_mro_order_form_view2" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="mro_order_form_view2"/>
+            <field name="act_window_id" ref="fleet.action_orders2"/>
+     </record>
+     <record id="act_mro_order_calendar_view2" model="ir.actions.act_window.view">
+            <field eval="3" name="sequence"/>
+            <field name="view_mode">calendar</field>
+            <field name="view_id" ref="mro.mro_order_calendar_view"/>
+            <field name="act_window_id" ref="fleet.action_orders2"/>
+    </record>
+
+    <menuitem name="Assistances"
+            action="fleet.action_orders2"
+            id="menu_mro_order2"
+            parent="mro.menu_mro_maintenance"
+            sequence="11"/>
+
+	<!-- FIN MENU ASSISTANCE -->
+ 
+    <record id="part_search_form_view" model="ir.ui.view">
+            <field name="name">product.template.search.mro</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="mro.part_search_form_view"/>
+            <field name="arch" type="xml">
+                <filter name="parts" position="replace">
+                    <filter string="Parts" name="parts_variants" domain="[('categ_id','=',%(mro.product_category_mro)d)]" help="Parts your store in the inventory"/>
+                </filter>
+            </field>
+    </record>
+        
+ 	<record id="mro.part_action" model="ir.actions.act_window">
+ 		<field name="res_model">product.product</field>
+ 		<field name="context" eval="{'default_categ_id': ref('mro.product_category_mro'), 'search_default_parts_variants':1}"/>
+ 	</record>
+ 	</data>
+</odoo>

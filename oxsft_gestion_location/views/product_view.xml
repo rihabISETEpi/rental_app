@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- view specific to product.product -->
+        <record id="product_normal_form_view" model="ir.ui.view">
+            <field name="name">product.product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="priority" eval="1" />
+            <field name="arch" type="xml">
+				<xpath expr="/form/sheet/notebook/page[position()=last()]" position="after">
+					<page string="Particularités">
+						<group>
+							<group>
+								<field name="vente" />
+								<field name="achat" />
+								<field name="historique" string="Historique"/>
+								<field name="prorata" />
+							</group>
+							<group string="Prestations">
+								<field name="prestation_ok" />
+								<field name="type_prestation" />
+							</group>
+						</group>
+					</page>
+				</xpath>
+            </field>
+        </record>
+	</data>
+</odoo>

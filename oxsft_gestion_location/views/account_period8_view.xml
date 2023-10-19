@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="account_period8_form" model="ir.ui.view">
+            <field name="name">fleet.vehicle.contract.period.form</field>
+            <field name="model">fleet.vehicle.contract.period</field>
+            <field name="arch" type="xml">
+				<form>
+					<group>
+						<field name="code" />
+						<field name="name" />
+						<field name="date_start" />
+						<field name="date_stop" />
+					</group>
+				</form>
+            </field>
+        </record>
+        <record id="account_period8_tree" model="ir.ui.view">
+            <field name="name">fleet.vehicle.contract.period.tree</field>
+            <field name="model">fleet.vehicle.contract.period</field>
+            <field name="arch" type="xml">
+				<tree>
+					<field name="code" />
+					<field name="name" />
+					<field name="date_start" />
+					<field name="date_stop" />
+				</tree>
+            </field>
+        </record>
+    </data>
+</odoo>   

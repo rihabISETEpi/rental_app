@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="0">
+      	<record id="fleet_vehicle_move_location0" model="fleet.vehicle.move.location">
+      		<field name="code">DIS</field>
+          	<field name="name">DISPONIBLE</field>
+      	</record>
+      	
+      	<record id="fleet_vehicle_move_location1" model="fleet.vehicle.move.location">
+      		<field name="code">LOC</field>
+          	<field name="name">LOCATION</field>
+      	</record>
+
+      	<record id="fleet_vehicle_move_location10" model="fleet.vehicle.move.location">
+      	<field name="code">RESA</field>
+          	<field name="name">RÉSERVATION</field>
+      	</record>
+
+      	<record id="fleet_vehicle_move_location2" model="fleet.vehicle.move.location">
+      	    <field name="code">ENT</field>
+          	<field name="name">ENTRETIEN</field>
+      	</record>
+
+      	<record id="fleet_vehicle_move_location3" model="fleet.vehicle.move.location">
+      		<field name="code">REP</field>
+          	<field name="name">REPATRATION</field>
+      	</record>
+
+      	<record id="fleet_vehicle_move_location4" model="fleet.vehicle.move.location">
+      		<field name="code">RPR</field>
+          	<field name="name">À reprendre</field>
+      	</record>
+     </data>
+</odoo>

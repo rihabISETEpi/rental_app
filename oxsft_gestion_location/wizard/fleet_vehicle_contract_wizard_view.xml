@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+		<record model="ir.ui.view" id="fleet_vehicle_movetype_choice_view">
+			<field name="name">fleet.vehicle.movetype.choice.form</field>
+			<field name="model">fleet.vehicle.movetype.choice</field>
+			<field name="arch" type="xml">
+			<form string="Création">
+				<group col="4">
+					<field name="start_date" />
+					<field name="interval" />
+				</group>
+				<group col="4">
+					  <field name="move_type" widget="radio"/>
+					  <field name="vehicle_id" readonly="1"/>
+				</group>
+				<footer>
+                    <button string="Continuer"
+                                name="get_form"
+                                type="object"
+                                class="oe_highlight" />
+				</footer>				
+			</form>
+			</field>
+		</record>
+
+		
+		<record model="ir.ui.view" id="fleet_vehicle_contract_wizard_view">
+			<field name="name">fleet.vehicle.contract.wizard.form</field>
+			<field name="model">fleet.vehicle.contract.wizard</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form>
+					<group col="4">
+					   <field name="date_stop" />
+						<field name="date_start"/>
+					</group>
+					<footer>
+                    	<button string="Créer"
+                                name="create_contract"
+                                type="object"
+                                class="oe_highlight" />
+                        	or
+                      	<button string="Annuler"
+                                class="oe_link o_form_button_cancel"
+                                special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+   		<act_window id="action_fleet_vehicle_contract_wizard"
+            name="Assistant de création d'avenant"
+            res_model="fleet.vehicle.contract.wizard"
+            view_type="form" view_mode="form"
+            key2="client_action_multi" target="new"
+            />
+
+
+		<record model="ir.ui.view" id="contract_vehicle_change_wizard_view">
+			<field name="name">contract.vehicle.change.wizard.form</field>
+			<field name="model">contract.vehicle.change.wizard</field>
+			<field name="priority" eval="1" />
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form>
+					<field name="contract_id" invisible="1"/>
+					<group string="Retour du matériel" col="6">
+							<field name="prev_vehicle_id"/>
+							<field name="prev_license_plate"/>
+							<field name="prev_category_id"/>
+							<field name="prev_model_id"/>
+							<newline />
+					   		<field name="prev_src_agence_id"/>
+					   		<field name="prev_start_date"/>
+					   		<field name="prev_odometer_start"/>
+					   		<field name="prev_dest_agence_id" />
+					   		<field name="prev_expiration_date" required="1"/>
+					   		<field name="prev_odometer_stop"/>
+					   		<newline />
+					   		<field name="prev_fuel_qty_start"/>
+					   		<newline />
+					   		<field name="prev_fuel_qty_stop"/>
+					</group>
+					<group string="Nouveau matériel" col="6">
+							<field name="vehicle_id" domain="[('id','!=',prev_vehicle_id)]"/>
+							<field name="license_plate"/>
+							<field name="category_id"/>
+							<field name="model_id"/>
+							<newline />
+					   		<field name="src_agence_id" />
+					   		<field name="start_date"/>
+					   		<field name="odometer_start"/>
+					   		<field name="dest_agence_id"/>
+					   		<field name="expiration_date"/>
+					   		<newline />
+					   		<field name="fuel_qty_start"/>
+					</group>
+					<footer>
+                    	<button string="Changer"
+                                name="modify_contract"
+                                type="object"
+                                class="oe_highlight" />
+                        	or
+                      	<button string="Cancel"
+                                class="oe_link"
+                                special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+
+		<record model="ir.ui.view" id="contract_vehicle_change_wizard_view_lld">
+			<field name="name">contract.vehicle.change.wizard.form</field>
+			<field name="model">contract.vehicle.change.wizard</field>
+			<field name="inherit_id" ref="contract_vehicle_change_wizard_view" />
+			<field name="mode">primary</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<button name="modify_contract" position="attributes">
+                	<attribute name="name">modify_contract_lld</attribute>
+                </button>
+                <field name="prev_expiration_date" position="attributes">
+                	<attribute name="required">0</attribute>
+                </field>
+			</field>
+		</record>
+
+
+   		<act_window id="action_contract_vehicle_change_wizard"
+            name="Assistant de changement de matériel"
+            res_model="contract.vehicle.change.wizard"
+            view_type="form" view_mode="form"
+            key2="client_action_multi" target="new"
+            />
+
+   		<act_window id="action_contract_vehicle_change_wizard_lld"
+            name="Assistant de changement de matériel"
+            res_model="contract.vehicle.change.wizard"
+            view_type="form" view_mode="form" view_id="contract_vehicle_change_wizard_view_lld"
+            key2="client_action_multi" target="new"
+            />
+
+
+        <record model='ir.actions.act_window' id='fleet_vehicle_move_planning_act2'>
+            <field name="name">Planning</field>
+            <field name="res_model">fleet.vehicle.move</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">gantt0,tree,form,calendar</field>
+            <field name="domain">[('vehicle_id.planning','=',True)]</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Clique pour créer un mouvement.
+              </p>
+            </field>
+        </record>            
+</odoo>

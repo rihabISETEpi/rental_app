@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+        <record model="res.groups" id="oxsft_group_manager">
+        <field name="name">Administration</field>
+        <field name="category_id" ref="category_loc"/>
+    </record>
+    <record model="res.groups" id="oxsft_group_accounting">
+        <field name="name">Comptable</field>
+        <field name="category_id" ref="category_loc"/>
+        <!-- <field name="implied_ids" eval="[(4, ref('fleet.fleet_group_user'))]"/> -->
+    </record>
+  <record model="res.groups" id="oxsft_group_responsible_activity">
+        <field name="name">Responsable d'activité</field>
+        <field name="category_id" ref="category_loc"/>
+    </record>
+    <record model="res.groups" id="oxsft_group_responsible_agence">
+        <field name="name">Responsable d'agence</field>
+        <field name="category_id" ref="category_loc"/>
+    </record>
+    <record model="res.groups" id="oxsft_group_responsible_loc">
+        <field name="name">Gestionnaire de la location</field>
+        <field name="category_id" ref="category_loc"/>
+    </record>
+
+</data>
+</odoo>

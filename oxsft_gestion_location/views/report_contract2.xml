@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<template id="report_fleet_vehicle_contract_document">
+	   <div class="page">       
+	   	   <strong>Contrat n°</strong> <span t-field="o.name"/>
+	   	   <div class="row">
+	   	   		<div class="col-xs-6">
+	   	   		<table width="100%" class="border_style">
+	   	   			<tr>
+	   	   				<td>
+	   	   					<address t-field="o.partner_id"
+                        			t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}' />
+	   	   			    </td>
+	   	   			</tr>
+	   	   			<tr>
+	   	   				<td>N° CB / Chèque</td>
+	   	   			    <td>Date</td>
+	   	   			    <td>Montant</td>
+	   	   			    <td>Caution N°</td>
+	   	   			</tr>	   	   			
+	   	   		</table>
+	   	   		</div>
+	   	   		<div class="col-xs-2">
+	   	   		<table width="100%" class="border_style">
+	   	   			<tr>
+	   	   				<td>N° Compte<br /><span /></td>
+	   	   			</tr>
+	   	   			<tr>
+	   	   				<td>N° de parc<br /><span t-field="o.vehicle_id.id"/></td>
+	   	   			</tr>	 
+	   	   			<tr>
+	   	   				<td>Modèle<br /><span t-field="o.vehicle_id.libelle"/></td>
+	   	   			</tr>		   	   			  	   			
+	   	   		</table>	
+	   	   		</div>  
+	   	   		<div class="col-xs-4"> 	
+	   	   			<table width="100%" class="border_style">
+	   	   				<tr><td></td></tr>
+	   	   				<tr>
+	   	   					<table>
+	   	   						<tr>
+	   	   							<td>Lieu</td>
+	   	   							<td>Date de retour prévu</td>
+	   	   						</tr>
+	   	   						<tr>
+	   	   							<td class="text-left"><span t-field="o.src_agence_id.code"/></td>
+	   	   							<td class="text-right"><span t-field="o.expiration_date"/></td>
+	   	   						</tr>	   	   					
+	   	   					</table>
+	   	   				</tr>
+	   	   			</table>
+	   	   		</div>		   	   		   		
+	   	   </div>
+	   	</div>
+</template>
+<template id="report_fleet_vehicle_contract">
+    <t t-call="report.html_container">
+        <t t-foreach="doc_ids" t-as="doc_id">
+            <t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'nxtm_gestion_location.report_fleet_vehicle_contract_document')"/>
+        </t>
+    </t>
+</template>
+</data>
+</odoo>

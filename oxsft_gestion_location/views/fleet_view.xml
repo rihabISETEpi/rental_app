@@ -1,0 +1,2294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+	    <record model="ir.ui.view" id="fleet_vehicle_model_compteur_tree">
+			<field name="name">fleet.vehicle.model.compteur.tree</field>
+			<field name="model">fleet.vehicle.model.compteur</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree editable="bottom">
+					<field name="code" />
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+        <record model='ir.ui.view' id='fleet_vehicle_model_view_search'>
+            <field name="name">fleet.vehicle.model.search</field>
+            <field name="model">fleet.vehicle.model</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_model_view_search"/>
+            <field name="arch" type="xml">
+            	<field name="brand_id" position="before">
+            		<field name="code" />
+            	</field>
+            </field>
+        </record>
+        
+        <record model='ir.ui.view' id='fleet_vehicle_model_view_form'>
+            <field name="name">fleet.vehicle.model.form</field>
+            <field name="model">fleet.vehicle.model</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_model_view_form" />
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='image_medium']" position="attributes">
+            		<attribute name="invisible">1</attribute>
+            	</xpath>
+            	<xpath expr="//div[@class='oe_title']" position="replace">
+                	<group col="8">
+                    	<div col="1">
+                            <label for="code"/>
+                            <div>
+                                <field name="code" required="1"/>
+                            </div>
+                        </div>
+                    	<div col="1">
+                            <label for="name"/>
+                            <div>
+                                <field name="name" />
+                            </div>
+                        </div>
+                	</group>
+            	</xpath>
+            	<xpath expr="//page[position()=1]" position="attributes">
+            		<attribute name="invisible">1</attribute>
+            	</xpath>
+            	<xpath expr="//page[position()=1]" position="before">
+            		<page string="Désignation">
+				    	<table width="100%">
+				    		<tr>
+				    			<td>
+				    				<label for="type_id" />
+                               		<div>
+                                    	<field name="type_id" class="oe_inline" required="1"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="category_id" />
+                               		<div>
+                                    	<field name="category_id" class="oe_inline" required="1"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="ss_type_id" />
+                               		<div>
+                                    	<field name="ss_type_id" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td rowspan="2">
+									<field name="image_medium" widget='image' class="oe_left oe_avatar"/>
+                                </td>
+                            </tr>
+				    		<tr>
+				    			<td>
+				    				<label for="nature" />
+                               		<div>
+                                    	<field name="nature" class="oe_inline" required="1"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="nature_cpt" />
+                               		<div>
+                                    	<field name="nature_cpt" class="oe_inline" required="1"/>
+                                	</div>    
+				    				<label for="nature_cpt2" />
+                               		<div>
+                                    	<field name="nature_cpt2" class="oe_inline"/>
+                                	</div>                           
+                                </td>
+                                <td>
+				    				<label for="nature_jauge" />
+                               		<div>
+                                    	<field name="nature_jauge" class="oe_inline"/>
+                                	</div>
+                                </td>
+								<td></td>
+                            </tr>
+				    	</table>
+				    	<group>
+				    		<field name="notes" />
+				    	</group>
+				    	<group>
+				    		<group>
+				    			<div>
+				    				<field name="stock" />
+				    				<label for="stock" />
+				    			</div>
+				    		</group>
+				    		<group>
+				    			<div>
+				    				<field name="mouvement" />
+				    				<label for="mouvement" />
+				    			</div>
+				    		</group>
+				    	</group>	
+				    	<table width="100%">
+				    		<tr>
+				    			<td></td>
+				    			<td></td>
+				    			<td><group string="Consommation"></group></td>
+				    		</tr>
+				    		<tr>
+				    			<td>
+				    				<label for="capacite_reservoir" />
+                               		<div>
+                                    	<field name="capacite_reservoir" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="capacite_reservoir2" />
+                               		<div>
+                                    	<field name="capacite_reservoir2" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+                                	<table>
+                                		<tr>
+                                			<td>
+				    							<label for="cons_urbaine" />
+                               					<div>
+                                    				<field name="cons_urbaine" class="oe_inline"/>
+                                				</div>
+                                			</td>
+                                			<td>
+				    							<label for="cons_mixte" />
+                               					<div>
+                                    				<field name="cons_mixte" class="oe_inline"/>
+                                				</div>
+                                			</td>
+                                			<td>
+				    							<label for="cons_extra_urbaine" />
+                               					<div>
+                                    				<field name="cons_extra_urbaine" class="oe_inline"/>
+                                				</div>
+                                			</td>
+                                		</tr>
+                                	</table>
+                                </td>
+                            </tr>
+                        </table>			    	
+            		</page>
+            		<page string="Infos + carte grise">
+				    	<table width="100%">
+				    		<tr>
+				    			<td>
+				    				<label for="brand_id" />
+                               		<div>
+                                    	<field name="brand_id" class="oe_inline" required="0"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t01" />
+                               		<div>
+                                    	<field name="t01" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="t02" />
+                               		<div>
+                                    	<field name="t02" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t03" />
+                               		<div>
+                                    	<field name="t03" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t04" />
+                               		<div>
+                                    	<field name="t04" class="oe_inline"/>
+                                	</div>
+                                </td>                 
+
+                            </tr>
+				    		<tr>
+				    			<td>
+				    				<label for="t10" />
+                               		<div>
+                                    	<field name="t10" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t11" />
+                               		<div>
+                                    	<field name="t11" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="t12" />
+                               		<div>
+                                    	<field name="t12" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t13" />
+                               		<div>
+                                    	<field name="t13" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t14" />
+                               		<div>
+                                    	<field name="t14" class="oe_inline"/>
+                                	</div>
+                                </td>                 
+                            </tr>
+				    		<tr>
+				    			<td>
+				    				<label for="t20" />
+                               		<div>
+                                    	<field name="t20" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t21" />
+                               		<div>
+                                    	<field name="t21" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="t22" />
+                               		<div>
+                                    	<field name="t22" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t23" />
+                               		<div>
+                                    	<field name="t23" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t24" />
+                               		<div>
+                                    	<field name="t24" class="oe_inline"/>
+                                	</div>
+                                </td>                 
+                            </tr>
+				    		<tr>
+				    			<td>
+				    				<label for="t30" />
+                               		<div>
+                                    	<field name="t30" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t31" />
+                               		<div>
+                                    	<field name="t31" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="t32" />
+                               		<div>
+                                    	<field name="t32" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t33" />
+                               		<div>
+                                    	<field name="t33" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t34" />
+                               		<div>
+                                    	<field name="t34" class="oe_inline"/>
+                                	</div>
+                                </td>                 
+                            </tr>            
+				    		<tr>
+				    			<td>
+				    				<table>
+				    					<tr>
+				    						<td>
+				    							<label for="garantie_id" />
+                               					<div>
+                                    				<field name="garantie_id" class="oe_inline"/>
+                                				</div>  
+                                			</td>
+                                			<td>
+				    							<label for="nb_mois" />
+                               					<div>
+                                    				<field name="nb_mois" class="oe_inline"/>
+                                				</div>  
+                                			</td>    
+                                		</tr>
+                                	</table> 
+                                </td>
+                                <td>
+				    				<label for="t41" />
+                               		<div>
+                                    	<field name="t41" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="t42" />
+                               		<div>
+                                    	<field name="t42" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t43" />
+                               		<div>
+                                    	<field name="t43" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t44" />
+                               		<div>
+                                    	<field name="t44" class="oe_inline"/>
+                                	</div>
+                                </td>                 
+                            </tr>
+				    		<tr>
+				    			<td>
+				    				<table>
+				    					<tr>
+				    						<td>
+				    							<label for="cpteur_maxi" />
+                               					<div>
+                                    				<field name="cpteur_maxi" class="oe_inline"/>
+                                				</div>  
+                                			</td>
+                                			<td>
+				    							<label for="cpteur_maxi2" />
+                               					<div>
+                                    				<field name="cpteur_maxi2" class="oe_inline"/>
+                                				</div>  
+                                			</td>    
+                                		</tr>
+                                	</table>                     		
+                                </td>
+                                <td>
+				    				<label for="t51" />
+                               		<div>
+                                    	<field name="t51" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="t52" />
+                               		<div>
+                                    	<field name="t52" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t53" />
+                               		<div>
+                                    	<field name="t53" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t54" />
+                               		<div>
+                                    	<field name="t54" class="oe_inline"/>
+                                	</div>
+                                </td>                 
+                            </tr>    
+				    		<tr>
+				    			<td>
+                                </td>
+                                <td>
+				    				<label for="t61" />
+                               		<div>
+                                    	<field name="t61" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="t62" />
+                               		<div>
+                                    	<field name="t62" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t63" />
+                               		<div>
+                                    	<field name="t63" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t64" />
+                               		<div>
+                                    	<field name="t64" class="oe_inline"/>
+                                	</div>
+                                </td>                 
+                            </tr>                                                                                                  
+				    	</table>
+				    	<group>
+				    		<group><field name="pneumatique" /></group>
+				    		<group><field name="cylindre" /></group>
+				    	</group>
+            		</page>
+            		<page string="Caractéristiques techniques">
+            			<field name="caracteristique_ids" nolabel='1'>
+            				<tree editable="bottom">
+            					<field name="pere" />
+            					<field name="name" />
+            					<field name="tech" />
+            					<field name="ok" />
+            					<field name="code1" />
+            					<field name="code2" />
+            					<field name="valeur1" />
+            					<field name="valeur2" />     
+            					<field name="date1" />
+            					<field name="date2" />            					       					
+            				</tree>
+            			</field>
+            		</page>
+            		<page string="Equipements">
+            			<field name="equipement_ids" nolabel='1'>
+            				<tree editable="bottom">
+            					<field name="pere" />
+            					<field name="name" />
+            					<field name="tech" />
+            					<field name="ok" />
+            					<field name="code1" />
+            					<field name="code2" />
+            					<field name="valeur1" />
+            					<field name="valeur2" />     
+            					<field name="date1" />
+            					<field name="date2" />            					       					
+            				</tree>
+            			</field>
+            		</page>
+ 					<page string="Mod. d'alertes">
+ 						<button name="update_all_vehicle" string="Mise à jour des alertes" type="object"/>
+ 						<button name="%(tms_gmao_pm_model_link_action)d" string="Lier modèle d’alerte" type="action"/>
+ 						<field name="pmm_ids" string="Modèles d’alertes"/>
+ 					</page>
+            		<page string="Divers">
+            			<table>
+            				<tr>
+            					<td colspan="2">
+            						<label for="d_libelle" />
+                               		<div>
+                                    	<field name="d_libelle" class="oe_inline"/>
+                                	</div>
+            					</td>
+            					<td>
+            						<label for="d_famille_p_id" />
+                               		<div>
+                                    	<field name="d_famille_p_id" class="oe_inline"/>
+                                	</div>
+            					</td>
+            					<td></td>
+            					<td></td>
+            				</tr>
+            				<tr>
+            					<td>
+            						<label for="d_code1" />
+                               		<div>
+                                    	<field name="d_code1" class="oe_inline"/>
+                                	</div>
+            					</td>
+            					<td>
+            						<label for="d_code2" />
+                               		<div>
+                                    	<field name="d_code2" class="oe_inline"/>
+                                	</div>
+            					</td>
+            					<td>
+            						<label for="d_famille_s_id" />
+                               		<div>
+                                    	<field name="d_famille_s_id" class="oe_inline"/>
+                                	</div>
+            					</td>
+            					<td></td>
+            					<td></td>
+            				</tr>
+            				<tr>
+            					<td>
+            					</td>
+            					<td>
+            					</td>
+            					<td>
+            						<label for="d_famille_t_id" />
+                               		<div>
+                                    	<field name="d_famille_t_id" class="oe_inline"/>
+                                	</div>
+            					</td>
+            					<td></td>
+            					<td></td>
+            				</tr>
+            			</table>
+            		</page>            		            		            	
+            	</xpath>
+            </field>
+        </record>
+        
+	<record model="ir.ui.view" id="fleet_vehicle_form">
+	    <field name="name">oxsft.fleet.vehicle.form</field>
+	    <field name="model">fleet.vehicle</field>
+	    <field name="inherit_id" ref="fleet.fleet_vehicle_view_form" />
+	    <field name="arch" type="xml">
+	    	<form position="replace">
+                <form string="Vehicle">
+                    <header>
+                        <field name="state_id"  widget="statusbar" clickable="True" />
+                    </header>
+                   <!--  <sheet> -->
+                        <div class="oe_button_box" name="button_box">
+<!--                             <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            </button> -->
+                            <button name="return_action_to_open"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-book"
+                                context="{'xml_id':'fleet_vehicle_contract_act'}"
+                                help="show the contract for this vehicle">
+                                <field name="contract_count2" widget="statinfo" string="Contrats CD"/>
+                            </button>
+                            <button name="return_action_to_open"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-book"
+                                context="{'xml_id':'fleet_vehicle_contract_lld_act'}"
+                                help="show the contract for this vehicle">
+                                <field name="contract_count_lld2" widget="statinfo" string="Contrats LD"/>
+                            </button>
+                            <button name="return_action_to_open"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-wrench"
+                                context="{'xml_id':'action_tms_gmao_pm'}"
+                                help="Entretien Prévisionel" >
+                                <field name="alert_count" widget="statinfo" string="Entretien Prév."/>
+                            </button>
+                            <button name="return_action_to_open"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-wrench"
+                                context="{'xml_id':'action_orders'}"
+                                help="Ordre de maintenances" 
+                                groups="!base.oxsft_group_accounting">
+                                <field name="orders_count" widget="statinfo" string="OR"/>
+                            </button>
+                            <button name="return_action_to_open"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-wrench"
+                                context="{'xml_id':'action_orders2'}"
+                                help="Assistances" 
+                                groups="!base.oxsft_group_accounting">
+                                <field name="orders2_count" widget="statinfo" string="Assistances"/>
+                            </button>
+                            <button name="return_action_to_open"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-flask"
+                                context="{'xml_id':'fleet_vehicle_log_fuel_action'}"
+                                help="show the fuel logs for this vehicle" >
+                                <field name="fuel_logs_count" widget="statinfo" string="Carburant"/>
+                            </button>
+                            <button name="return_action_to_open2"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-strikethrough"
+                                context="{'xml_id':'action_invoice_tree1'}"
+                                help="Toutes les ventes liées" >
+                                <field name="vente_count" widget="statinfo" string="Ventes"/>
+                            </button>
+                            <button name="return_action_to_open2"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-shopping-cart"
+                                context="{'xml_id':'action_invoice_tree2'}"
+                                help="Tous les achats liées" >
+                                <field name="achat_count" widget="statinfo" string="Achats"/>
+                            </button>
+                            <button name="return_action_to_open2"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-shopping-cart"
+                                context="{'xml_id':'purchase_rfq','module':'purchase'}"
+                                help="Toutes les Devis" >
+                                <field name="cmd_achat_count" widget="statinfo" string="Devis"/>
+                            </button>
+                            <button name="return_action_to_open"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-tachometer"
+                                context="{'xml_id':'fleet_vehicle_move_act','default_vehicle_id':active_id}"
+                                help="Voir tous les mouvements" >
+                                <field name="move_count" widget="statinfo" string="Mouvements"/>
+                            </button>
+                            <button name="return_action_to_open"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-tachometer"
+                                context="{'xml_id':'fleet_vehicle_odometer_action'}"
+                                help="show the odometer logs for this vehicle" >
+                                <field name="odometer_count" widget="statinfo" string="Kilométrage"/>
+                            </button>
+                        </div>
+				    	<table width="100%">
+				    		<tr>
+				    			<td>
+                                	<label for="id" string="ID :"/>
+                                </td>
+                                <td>
+                                	<label for="model_id" string="Modèle"/>
+                                </td>
+                                <td>
+                                	<label for="libelle" />
+                                </td>
+                                <td>
+                                	<label for="product_id" string='Article :'/>
+                                </td>
+                                <td>
+                                	<label for="last_move_name"/>
+                                </td>
+                            </tr>
+				    		<tr>
+				    			<td>
+                                	<field name="id"/>
+                                </td>
+                                <td>
+                                	<field name="model_id"/>
+                                </td>
+                                <td>
+                                	<field name="libelle" required="1"/>
+                                </td>
+                                <td>
+                                	<field name="product_id" required="1"/>
+                                </td>
+                                <td>
+                                	<field name="last_move_name"/>
+                                	<field name="last_move_id" invisible="1"/>
+                                </td>
+                            </tr>                            
+                            
+                            
+				    		<tr>
+				    			<td>
+                                	<label for="license_plate" string='Immatriculation :'/>
+                                </td>
+                                <td>
+                                	<label for="date" />
+                                </td>
+                                <td>
+                                	<label for="lot" />
+                                </td>
+                                <td>
+                                	<label for="nature_materiel"/>
+                                </td>
+                                <td></td>
+                            </tr>
+				    		<tr>
+				    			<td>
+                                	<field name="license_plate"  required="0"/>
+                                </td>
+                                <td>
+                                	<field name="date" />
+                                </td>
+                                <td>
+                                	<field name="lot"/>
+                                </td>
+                                <td>
+                                	<field name="nature_materiel" style="width:60%;"/>
+                                </td>
+                                <td>
+                                    <field name="mouvement" class="oe_inline"/>
+                                    <label for="mouvement" />
+                                </td>
+                            </tr>
+                        </table>  
+			    		<notebook>
+							<page name="designation" string="Désignation">
+				    			<table width="100%">
+				    				<tr>
+				    					<td>
+                                			<label for="date_entree_prevue" />
+                                		</td>
+                                		<td>
+                                			<label for="date_entree" />
+                                		</td>
+                                		<td>
+                                			<label for="duree_prevue" groups="!base.oxsft_group_accounting"/>
+                                		</td>
+                                		<td>
+                                			<label for="sortie_prevue" />
+                                		</td>
+                                		<td>
+                                			<label for="sortie_reelle" />
+                                		</td>
+                                		<td>
+                                			<label for="odometer" string="Dernier relevé kilométrique :"/>
+                                		</td>
+                                		<td>
+                                			<label for="odometer_unit" string="Unité :"/>
+                                		</td>
+                                		<td>
+                                			<label for="last_odometer_date" />
+                                		</td>
+                                		<td rowspan="3">
+											<field name="image_medium" widget='image' class="oe_left oe_avatar"/>
+                                		</td>
+                            		</tr>
+				    				<tr>
+				    					<td>
+                                    		<field name="date_entree_prevue" class="oe_inline"/>
+                                		</td>
+                                		<td>
+											<field name="date_entree" class="oe_inline"/>                   
+                                		</td>
+                                		<td>
+                                    		<field name="duree_prevue" class="oe_inline" groups="!base.oxsft_group_accounting"/>
+                                		</td>
+                                		<td>
+                                    		<field name="sortie_prevue" class="oe_inline"/>
+                                		</td>
+                                		<td>
+                                    		<field name="sortie_reelle" class="oe_inline"/>
+                                		</td>
+                                		<td>
+                                    		<field name="odometer" class="oe_inline"/>
+                                		</td>
+                                		<td>
+                                    		<field name="odometer_unit" class="oe_inline"/>
+                                		</td>
+                                		<td>
+                                    		<field name="last_odometer_date" class="oe_inline"/>
+                                		</td>
+                            		</tr>                            	
+                            	
+				    				<tr>
+				    					<td>
+                                			<label for="agence_id" />
+                                		</td>
+                                		<td>
+                                			<label for="affectation_manuelle_id" />
+                                		</td>
+                                		<td>
+                                			<label for="owner" />
+                                		</td>
+                                		<td>
+                                			<label for="manager" />
+                                		</td>
+                                		<td>
+                                			<label for="pool_vehicule_id" />
+                                		</td>
+                                		<td>
+                                			<label for="motif_de_sortie" />
+                                		</td>
+                                		<td>
+                                			<label for="type_id" />
+                                		</td>
+                                		<td>
+                                			<label for="category_id" />
+                                		</td>
+                            		</tr>
+				    				<tr>
+				    					<td>
+                                    		<field name="agence_id" required="1"/>
+                                		</td>
+                                		<td>
+                                    		<field name="affectation_manuelle_id"/>
+                                		</td>
+                                		<td>
+                                    		<field name="owner" required="1"/>
+                                		</td>
+                                		<td>
+                                    		<field name="manager" required="1"/>
+                                		</td>
+                                		<td>
+                                    		<field name="pool_vehicule_id" />
+                                		</td>
+                                		<td>
+                                    		<field name="motif_de_sortie"/>
+                                		</td>
+                                		<td>
+                                    		<field name="type_id"/>
+                                		</td>
+                                		<td>
+                                    		<field name="category_id" class="oe_inline"/>
+                                		</td>
+                            		</tr>
+                            	</table>
+                            	
+                            	<table width="100%">
+                            		
+                             		<tr>
+                            			<td><label for="ss_type_id"/></td>
+                            			<td><label for="nature_cpt2"/></td>
+                            			<td><label for="nature_jauge"/></td>
+                            			<td></td>
+                            		</tr>                           		
+                            		<tr>
+                            			<td><field name="ss_type_id"/></td>
+                            			<td><field name="nature_cpt2"/></td>
+                            			<td><field name="nature_jauge"/></td>
+                            			<td class="text-right">
+                            			    <field name="planning" class="oe_inline"/>
+                            				<label for="planning" />
+                            			</td>
+                            		</tr>
+                            	</table>
+                            	<table width="70%" attrs="{'invisible':[('nature_materiel','!=','vehicle_ok')]}">
+                            		<tr>
+                            			<td></td>
+                            			<td></td>
+                            			<td colspan="3"><group string="Consommation"></group></td>
+                            		</tr>
+                             		<tr>
+                            			<td><label for="capacite_reservoir"/></td>
+                            			<td><label for="capacite_reservoir2"/></td>
+                            			<td><label for="cons_urbaine"/></td>
+                            			<td><label for="cons_mixte"/></td>
+                            			<td><label for="cons_extra_urbaine"/></td>
+                            		</tr>                           		
+                            		<tr>
+                            			<td><field name="capacite_reservoir"/></td>
+                            			<td><field name="capacite_reservoir2"/></td>
+                            			<td><field name="cons_urbaine"/></td>
+                            			<td><field name="cons_mixte"/></td>
+                            			<td><field name="cons_extra_urbaine"/></td>
+                            		</tr>                             	
+                            	</table>
+							</page>
+            				<page name="carte_grise" string="Carte grise" attrs="{'invisible':[('nature_materiel','!=','vehicle_ok')]}" groups="!base.oxsft_group_accounting">
+            				<group>
+            					<group><field name='date_misc' string="Date 1ère MISC"/></group>
+            					<group><field name='owner2' /></group>
+            				</group>
+            				<separator />
+				    		<table width="100%">
+				    		<tr>
+				    			<td>
+				    				<label for="brand_id" />
+                               		<div>
+                                    	<field name="brand_id" class="oe_inline" required="0"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t01" />
+                               		<div>
+                                    	<field name="t01" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="t62" />
+                               		<div>
+                                    	<field name="t62" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="cylindre" />
+                               		<div>
+                                    	<field name="cylindre" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t63" />
+                               		<div>
+                                    	<field name="t63" class="oe_inline"/>
+                                	</div>
+                                </td>
+                            </tr>
+				    		<tr>
+				    			<td>
+				    				<label for="t10" />
+                               		<div>
+                                    	<field name="t10" class="oe_inline" required="0"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t11" />
+                               		<div>
+                                    	<field name="t11" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="t42" />
+                               		<div>
+                                    	<field name="t42" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="t33" />
+                               		<div>
+                                    	<field name="t33" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t04" />
+                               		<div>
+                                    	<field name="t04" class="oe_inline"/>
+                                	</div>
+                                </td>
+                            </tr>
+				    		<tr>
+				    			<td>
+				    				<label for="t20" />
+                               		<div>
+                                    	<field name="t20" class="oe_inline" required="0"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t21" />
+                               		<div>
+                                    	<field name="t21" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="t52" />
+                               		<div>
+                                    	<field name="t52" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="t03" />
+                               		<div>
+                                    	<field name="t03" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t14" />
+                               		<div>
+                                    	<field name="t14" class="oe_inline"/>
+                                	</div>
+                                </td>
+                            </tr>
+				    		<tr>
+				    			<td>
+				    				<label for="t30" />
+                               		<div>
+                                    	<field name="t30" class="oe_inline" required="0"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t43" />
+                               		<div>
+                                    	<field name="t43" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="t53" />
+                               		<div>
+                                    	<field name="t53" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="t13" />
+                               		<div>
+                                    	<field name="t13" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t24" />
+                               		<div>
+                                    	<field name="t24" class="oe_inline"/>
+                                	</div>
+                                </td>
+                            </tr>
+				    		<tr>
+				    			<td>
+				    				<label for="date_fabrication" />
+                               		<div>
+                                    	<field name="date_fabrication" class="oe_inline" required="0"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="numero_carte_grise" />
+                               		<div>
+                                    	<field name="numero_carte_grise" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="code_peinture" />
+                               		<div>
+                                    	<field name="code_peinture" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="t23" />
+                               		<div>
+                                    	<field name="t23" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t34" />
+                               		<div>
+                                    	<field name="t34" class="oe_inline"/>
+                                	</div>
+                                </td>
+                            </tr>
+				    		<tr>
+				    			<td>
+				    				<label for="origin_country_id" />
+                               		<div>
+                                    	<field name="origin_country_id" class="oe_inline" required="0"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="moteur" />
+                               		<div>
+                                    	<field name="moteur" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="t44" />
+                               		<div>
+                                    	<field name="t44" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="t64" />
+                               		<div>
+                                    	<field name="t64" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="t54" />
+                               		<div>
+                                    	<field name="t54" class="oe_inline"/>
+                                	</div>
+                                </td>
+                            </tr>
+				    		<tr>
+				    			<td>
+                                </td>
+                                <td>                          
+                                </td>
+                                <td>                           
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+				    				<label for="color" string="Couleur :"/>
+                               		<div>
+                                    	<field name="color" class="oe_inline"/>
+                                	</div>
+                                </td>
+                            </tr>
+                    	</table>
+                    </page>
+            		<page name="caracteristique" string="Caractéristiques techniques">
+            			<field name="caracteristique_ids" nolabel='1'>
+            				<tree editable="bottom">
+            					<field name="pere" string='Père'/>
+            					<field name="name" />
+            					<field name="tech" />
+            					<field name="ok" />
+            					<field name="code1" />
+            					<field name="code2" />
+            					<field name="valeur1" />
+            					<field name="valeur2" />     
+            					<field name="date1" />
+            					<field name="date2" />            					       					
+            				</tree>
+            			</field>
+            		</page>
+            		<page name="equipement" string="Equipements">
+            			<field name="equipement_ids" nolabel='1'>
+            				<tree editable="bottom">
+            					<field name="pere" string='Père'/>
+            					<field name="name" />
+            					<field name="tech" />
+            					<field name="ok" />
+            					<field name="code1" />
+            					<field name="code2" />
+            					<field name="valeur1" />
+            					<field name="valeur2" />     
+            					<field name="date1" />
+            					<field name="date2" />            					       					
+            				</tree>
+            			</field>
+            		</page>
+            		<page name="rattachement" string="Rattachement">
+            			<field name="vehicle_modification_ids" nolabel="1">
+							<form string="Modification camion">
+								<group col="6" colspan="4">
+	                				<group colspan="4">
+	                					<field name="name" colspan="2"/>
+										<group colspan="4">
+		                					<separator colspan="4" string="Date" />
+											<field name="date_hook" colspan="1" />
+		                					<field name="date_unhook"   attrs="{'invisible':[('state','!=','unhooked')]}" />
+		                				</group>
+		                				<group	colspan="4">
+		                					<separator colspan="4" string="Affectation" />
+											<field name="nature_materiel" />
+											<field  domain="[('nature_materiel','=',nature_materiel)]" name="related_vehicle_id" context="{'default_nature_materiel':nature_materiel}"/>
+										</group>
+										<field name="state" colspan="1"/>
+									</group>
+									<newline/>
+	                				<group col="1" colspan="2">
+	                					<button name="set_unhook" states="hooked" string="Décrocher" type="object"/>
+	                    				<button name="set_hook" states="progress" string="Accrocher" type="object"/>
+	               					</group>
+	              				</group>
+							</form>
+            			</field>
+            		</page>
+            		<page name="achat" string="Achat" groups="base.oxsft_group_manager,base.oxsft_group_accounting">
+				    	<table width="100%">
+				    		<tr>
+				    			<td></td>
+				    			<td></td>
+				    			<td></td>
+				    			<td></td>
+				    			<td></td>
+				    			<td></td>
+				    			<td colspan="3" style="color:blue;">Cumul manuel + factures :</td>
+				    		</tr>
+				    		<tr>
+				    			<td>
+				    				<label for="fournisseur_id" />
+                               		<div>
+                                    	<field name="fournisseur_id" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+				    				<label for="prix_achat_ht_cumul" />
+                               		<div>
+                                    	<field name="prix_achat_ht_cumul" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="montant_tva_cumul" />
+                               		<div>
+                                    	<field name="montant_tva_cumul" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="montant_ttc_cumul" />
+                               		<div>
+                                    	<field name="montant_ttc_cumul" class="oe_inline"/>
+                                	</div>
+                                </td>
+                            </tr>
+				    		<tr>
+				    			<td></td>
+				    			<td></td>
+				    			<td></td>
+				    			<td></td>
+				    			<td></td>
+				    			<td></td>
+				    			<td colspan="3" style="color:blue;">Informations issues des factures :</td>
+				    		</tr>
+				    		<tr>
+				    			<td>
+				    				<label for="prix_catalogue" />
+                               		<div>
+                                    	<field name="prix_catalogue" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="numero_facture" />
+                               		<div>
+                                    	<field name="numero_facture" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="date_facture" />
+                               		<div>
+                                    	<field name="date_facture" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="prix_achat_ht" />
+                               		<div>
+                                    	<field name="prix_achat_ht" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="montant_tva" />
+                               		<div>
+                                    	<field name="montant_tva" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="montant_ttc" />
+                               		<div>
+                                    	<field name="montant_ttc" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="prix_achat_ht_facture" />
+                               		<div>
+                                    	<field name="prix_achat_ht_facture" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="montant_tva_facture" />
+                               		<div>
+                                    	<field name="montant_tva_facture" class="oe_inline"/>
+                                	</div>                             
+                                </td>
+                                <td>
+				    				<label for="montant_ttc_facture" />
+                               		<div>
+                                    	<field name="montant_ttc_facture" class="oe_inline"/>
+                                	</div>
+                                </td>
+                            </tr>
+                    	</table>   
+                    	<button name="purchase_clean" string="Vider la saisie manuelle" type="object"/> 
+            		</page>
+            		<page name="vente" string="Vente" groups="base.oxsft_group_manager,base.oxsft_group_accounting">
+				    	<table width="100%">
+				    		<tr>
+                                <td>
+				    				<label for="date_facture_vente" />
+                               		<div>
+                                    	<field name="date_facture_vente" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="numero_facture_vente" />
+                               		<div>
+                                    	<field name="numero_facture_vente" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="prix_vente_ht" />
+                               		<div>
+                                    	<field name="prix_vente_ht" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="montant_tva_vente" />
+                               		<div>
+                                    	<field name="montant_tva_vente" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="montant_ttc_vente" />
+                               		<div>
+                                    	<field name="montant_ttc_vente" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                            	<td colspan="3" style="color:blue;">Informations issues des factures :</td>
+                            	<td colspan="3" style="color:blue;">Cumul manuel + factures :</td>
+                            </tr>
+				    		<tr>
+                                <td>
+				    				<label for="prix_vente_ht_facture" />
+                               		<div>
+                                    	<field name="prix_vente_ht_facture" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="montant_tva_facture_vente" />
+                               		<div>
+                                    	<field name="montant_tva_facture_vente" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="montant_ttc_facture_vente" />
+                               		<div>
+                                    	<field name="montant_ttc_facture_vente" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="prix_vente_ht_cumul" />
+                               		<div>
+                                    	<field name="prix_vente_ht_cumul" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="montant_tva_cumul_vente" />
+                               		<div>
+                                    	<field name="montant_tva_cumul_vente" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td>
+				    				<label for="montant_ttc_cumul_vente" />
+                               		<div>
+                                    	<field name="montant_ttc_cumul_vente" class="oe_inline"/>
+                                	</div>
+                                </td>
+                            </tr>
+				    		<tr>
+				    			<td>
+				    				<label for="client_id" />
+                               		<div>
+                                    	<field name="client_id" class="oe_inline"/>
+                                	</div>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                    	</table>   
+                    	<button name="sale_clean" string="Vider la saisie manuelle" type="object"/>  
+            		</page>
+            		<page name="historique" string="Historiques">
+            			<field name="operation_ids" nolabel="1">
+            				<tree create="false" delete="false" editable="bottom">
+            					<field name="exclure" />
+            					<field name="nature" readonly="1"/>
+            					<field name="type" readonly="1"/>
+            					<field name="s_type" readonly="1"/>
+            					<field name="statut" readonly="1"/>
+            					<field name="libelle_operation" readonly="1"/>
+            					<field name="mro_id" readonly="1"/>
+            					<field name="date" readonly="1"/>
+            					<field name="odometer" readonly="1"/>
+            					<field name="odometer2" readonly="1"/>
+            					<field name="fr_quantity" sum="q1" readonly="1"/>
+            					<field name="clt_quantity" sum="q2" readonly="1"/>
+            					<field name="fr_ht" sum="ht1" readonly="1"/>
+            					<field name="clt_ht" sum="ht2" readonly="1"/>
+            					<field name="numero_accord" readonly="1"/>
+            					<field name="partner_id" readonly="1"/>
+            					<field name="invoice_id" readonly="1"/>
+            					<field name="date_facture" readonly="1"/>
+            				</tree>
+            			</field>
+            			<table style="width:100%;">
+            				<tr>
+            					<td></td>
+            					<td></td>
+            					<td>
+                               		<group>
+                                    	<field name="fr_quantity_total" class="oe_inline"/>
+                                	</group>
+            					</td>
+            					<td>
+            						<group>
+                                    	<field name="clt_quantity_total" class="oe_inline"/>
+                                	</group>            					
+            					</td>
+            					<td></td>
+            				</tr>
+            				<tr>
+            					<td></td>
+            					<td></td>
+            					<td>
+                               		<group>
+                                    	<field name="fr_ht_total" class="oe_inline"/>
+                                	</group>
+            					</td>
+            					<td>
+                               		<group>
+                                    	<field name="clt_ht_total" class="oe_inline"/>
+                                	</group>  
+            					</td>
+            					<td>
+                               		<group>
+                                    	<field name="histo_solde" class="oe_inline"/>
+                                	</group>         					
+            					</td>
+            				</tr>
+            			</table>
+            		</page>
+			    	</notebook>
+                    <!-- </sheet> -->
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread" options='{"thread_level": 1}'/>
+                    </div>
+                </form>	    	
+	    	</form>
+	    </field>
+	</record>
+
+
+    <record model='ir.ui.view' id='fleet_vehicle_view_tree'>
+            <field name="name">fleet.vehicle.tree</field>
+            <field name="model">fleet.vehicle</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_view_tree"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//tree" position="replace">
+            		<tree string="Vehicle" colors="orange:contract_renewal_due_soon and not contract_renewal_overdue;red:contract_renewal_overdue">
+            			<field name="manager" string="Société"/>
+            			<field name="agence_id" string="Agence"/>
+            			<field name="id" string="N° parc"/>
+            			<field name="license_plate" string="N° Immatriculation"/>
+            			<field name="lot" string="N° de série"/>
+            			<field name="libelle" string="Libellé"/>
+            			<field name="model_id" />
+            			<field name="type_id" string="Type mat"/>
+            			<field name="category_id" string="Catégorie"/>
+            			<field name="nature_materiel" string="Nature du matériel" />
+            			<field name="owner" string="Propriétaire"/>
+            			<field name="odometer" string="Compteur actuel"/>
+            			<field name="last_move_id" string="Position actuelle"/>
+            			<field name="date_entree_prevue" string="Date d'entrée"/>
+            			<field name="sortie_prevue" string="Date de sortie"/>
+            			<field name="duree_prevue" string="Durée" groups="!base.oxsft_group_accounting"/>
+            			<field name="contract_renewal_due_soon" invisible="1"/>
+                        <field name="contract_renewal_overdue" invisible="1" />
+                        <field name="contract_renewal_total" invisible="1"/>
+            		</tree> 
+            	</xpath>
+            </field>
+    </record>
+
+    <record model="ir.ui.view" id="fleet_vehicle_view_search">
+            <field name="name">fleet.vehicle.search</field>
+            <field name="model">fleet.vehicle</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_view_search" />
+            <field name="arch" type="xml">
+            	<field name="name" position="before">
+            		<field name="id" string="N° Parc"/>
+            	</field>
+            	<field name="name" position="attributes">
+            		<attributes name="filter_domain">['|', '|',('name','ilike',self), ('license_plate','ilike',self),('lot','ilike',self)]</attributes>
+            	</field>
+            </field>
+    </record>
+    
+    <record model='ir.ui.view' id='fleet_vehicle_view_kanban'>
+    	<field name="name">fleet.vehicle.kanban</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_kanban" />
+        <field name="arch" type="xml">
+        	<xpath expr="//kanban" position="replace">
+                <kanban>
+                    <field name="license_plate" />
+                    <field name="model_id" />
+                    <field name="driver_id" />
+                    <field name="location" />
+                    <field name="state_id" />
+
+                    <field name="image" />
+                    <field name="tag_ids" />
+                    <field name="contract_renewal_due_soon" />
+                    <field name="contract_renewal_overdue" />
+                    <field name="contract_renewal_name" />
+                    <field name="contract_renewal_total" />
+
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="o_kanban_tags_section">
+                                    <field name="tag_ids"/>
+                                </div>
+                                <div class="o_kanban_image">
+                                    <img t-att-src="kanban_image('fleet.vehicle', 'image_small', record.id.value)"/>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <strong>
+                                        <field name="license_plate"/> : <field name="model_id"/>
+                                    </strong>
+                                    <ul>
+                                        <li>
+                                            <t t-if="record.driver_id.raw_value"><field name="driver_id"/></t>
+                                        </li>
+                                        <li>
+                                            <t t-if="record.location.raw_value"><field name="location"/></t>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </xpath>
+          </field>
+        </record>
+
+  	<!-- ========================== fleet_vehicle_modification =============================== -->
+
+	    <record model="ir.ui.view" id="fleet_vehicle_modification_form">
+			<field name="name">fleet.vehicle.modification.form</field>
+			<field name="model">fleet.vehicle.modification</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Modification camion">
+				<group col="6" colspan="4">
+	                <group colspan="4" >
+	                	<field name="name" colspan="2"/>
+						<group colspan="4"  >
+		                	<separator colspan="4" string="Date" />
+							<field name="date_hook" colspan="1" />
+		                	<field name="date_unhook"   attrs="{'invisible':[('state','!=','unhooked')]}" />
+		                </group>
+		                <group   colspan="4"  >
+		                	<separator colspan="4" string="Affectation" />
+			                <field  domain="[('nature_materiel','=','vehicle_ok')]" name="vehicle_id" string="Matricule véhicule"  />	
+			                <field  name="vehicle_code"  string="Référence véhicule" />			
+							<field name="nature_materiel" />
+							<field  domain="[('nature_materiel','=',nature_materiel)]" name="related_vehicle_id" context="{'default_nature_materiel':nature_materiel}"/>
+						</group>
+						<field name="state" colspan="1"/>
+					</group>
+					<newline/>
+	                <group col="1" colspan="2">
+	                	<button name="set_unhook" states="hooked" string="Décrocher" type="object"/>
+	                    <button name="set_hook" states="progress" string="Accrocher" type="object"/>
+	               </group>
+	              </group>
+				</form>
+			</field>
+		</record>
+			
+		<record model="ir.ui.view" id="fleet_vehicle_modification_tree">
+			<field name="name">fleet.vehicle.modification.tree</field>
+			<field name="model">fleet.vehicle.modification</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Affectation" colors="green:state == 'unhooked';blue:state == 'hooked';" >
+                	<field name="name" string="Référence"/>
+					<field  name="vehicle_id" string="Immatriculation"/>
+					<field name="nature_materiel" string="Type de rattachement"/>
+                    <field name="related_vehicle_id" string="Matériel rattaché"/>
+                    <field name="date_hook" string="Date de début"/>
+                    <field name="date_unhook" string="Date de fin"/>
+                    <field name="state" />
+				</tree>
+			</field>
+		</record>
+
+<!--		fleet.fleet_vehicle_modification_search ++zart-->
+		<record id="fleet_vehicle_modification_search" model="ir.ui.view">
+    <field name="name">fleet.vehicle.modification.search</field>
+    <field name="model">fleet.vehicle.modification</field>
+    <field name="type">search</field>
+    <field name="arch" type="xml">
+        <search string="Recherche Affectation parc">
+            <group col="10" colspan="4">
+                <filter name="filter_unhooked" string="Décroché" icon="STOCK_UNINDENT" domain="[('state','=','unhooked')]" separator="1"/>
+                <filter name="filter_hooked" string="Accroché" icon="gtk-indent" domain="[('state','=','hooked')]" separator="1"/>
+                <filter name="filter_progress" string="En cours" icon="terp-gtk-go-back-rtl" domain="[('state','=','progress')]" separator="1"/>
+            </group>
+            <newline/>
+            <field name="vehicle_id" select="1" string="Matricule véhicule"/>
+            <field name="vehicle_code" select="1" string="Référence véhicule"/>
+            <field name="related_vehicle_id" select="1"/>
+            <field name="date_hook" select="1"/>
+            <field name="date_unhook" select="1"/>
+            <newline/>
+            <group expand="0" string="Grouper par..." colspan="4" col="10">
+                <filter name="group_state" string="Status" icon="STOCK_ABOUT" domain="[]" context="{'group_by':'state'}"/>
+                <filter name="group_vehicle_id" string="Matricule véhicule" icon="terp-accessories-archiver" domain="[]" context="{'group_by':'vehicle_id'}"/>
+                <filter name="group_related_vehicle_id" string="Matériel rattaché" icon="terp-accessories-archiver" domain="[]" context="{'group_by':'related_vehicle_id'}"/>
+                <separator orientation="vertical"/>
+                <filter name="group_date_hook" string="Date accrochage" icon="terp-go-month" domain="[]" context="{'group_by':'date_hook'}"/>
+                <filter name="group_date_unhook" string="Date décrochage" icon="terp-go-month" domain="[]" context="{'group_by':'date_unhook'}"/>
+            </group>
+        </search>
+    </field>
+</record>
+
+
+  	<!-- ========================== fleet_vehicle_nature =============================== -->
+  	
+    	<record model='ir.ui.view' id='fleet_vehicle_nature_form'>
+            <field name="name">fleet.vehicle.nature.form</field>
+            <field name="model">fleet.vehicle.nature</field>
+            <field name="arch" type="xml">
+                <form string="Types de matériel">
+                	<sheet>
+                		<group>
+                			<field name="code" />
+                    		<field name="name" />
+                		</group>
+                	</sheet>
+                </form>
+            </field>
+      	</record>  
+
+        <record model='ir.ui.view' id='fleet_vehicle_nature_tree'>
+            <field name="name">fleet.vehicle.type.nature</field>
+            <field name="model">fleet.vehicle.nature</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+
+
+  	<!-- ========================== fleet_vehicle_type =============================== -->
+    	<record model='ir.ui.view' id='fleet_vehicle_type_form'>
+            <field name="name">fleet.vehicle.type.form</field>
+            <field name="model">fleet.vehicle.type</field>
+            <field name="arch" type="xml">
+                <form string="Types de matériel">
+                	<group>
+                    	<field name="name" />
+                	</group>
+                </form>
+            </field>
+      	</record>  
+
+        <record model='ir.ui.view' id='fleet_vehicle_type_tree'>
+            <field name="name">fleet.vehicle.type.tree</field>
+            <field name="model">fleet.vehicle.type</field>
+            <field name="arch" type="xml">
+                <tree string="Types de matériel">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+        
+  	<!-- ========================== fleet_service_type =============================== -->
+
+        <record model='ir.ui.view' id='fleet_vehicle_service_types_tree_gmao'>
+            <field name="name">fleet.service.type.tree.gmao</field>
+            <field name="model">fleet.service.type</field>
+            <field name="arch" type="xml">
+                <tree string="Types d'intervention">
+                	<field name="code" />
+                    <field name="name" />
+                    <field name="maintenance_type"/>
+                    <field name="category"/>
+                    <field name="mro_ok"/>
+                </tree>
+            </field>
+        </record>
+
+    	<record model='ir.ui.view' id='fleet_vehicle_service_types_form_gmao'>
+            <field name="name">fleet.service.type.form.gmao</field>
+            <field name="model">fleet.service.type</field>
+            <field name="arch" type="xml">
+                <form string="Types de service">
+                  <group>
+                  		<field name="code" />
+                    	<field name="name" />
+                    	<field name="maintenance_type" attrs="{'required':[('mro_ok','!=',False)]}"/>
+                    	<field name="category"  required="0"/>
+                    	<field name="mro_ok" />
+                  </group>
+                </form>
+            </field>
+        </record> 
+
+
+	    <record model="ir.ui.view" id="fleet_vehicle_operation_report_tree">
+			<field name="name">fleet.vehicle.operation.report.tree</field>
+			<field name="model">fleet.vehicle.operation.report</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+            				<tree>
+            					<field name="nature" />
+            					<field name="type" />
+            					<field name="s_type" />
+            					<field name="statut" />
+            					<field name="libelle_operation" />
+            					<field name="mro_id" />
+            					<field name="date" />
+            					<field name="odometer" />
+            					<field name="odometer2" />
+            					<field name="fr_quantity" />
+            					<field name="clt_quantity" />
+            					<field name="fr_ht" />
+            					<field name="clt_ht" />
+            					<field name="numero_accord" />
+            					<field name="partner_id" />
+            					<field name="invoice_id" />
+            					<field name="date_facture" />
+            				</tree>
+			</field>
+		</record>
+
+        <record model='ir.ui.view' id='fleet_vehicle_odometer_view_tree'>
+            <field name="name">fleet.vehicle.odometer.tree</field>
+            <field name="model">fleet.vehicle.odometer</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_odometer_view_tree" />
+            <field name="arch" type="xml">
+            	<field name="unit" position="after">
+            		<field name="origin" />
+            	</field>
+            	<field name="value" position="attributes">
+            		<attribute name="string">Kilométrage</attribute>
+            	</field>
+            </field>
+        </record>
+
+        <record model='ir.ui.view' id='fleet_vehicle_move_form'>
+            <field name="name">fleet.vehicle.move.form</field>
+            <field name="model">fleet.vehicle.move</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+            	<form>
+               		<header>
+                        <button name="action_done" states="draft" string="Terminer" type='object' class="oe_highlight"/>
+                    	<field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                	</header>
+                	<sheet>
+                		<table width="100%">
+                			<tr>
+                				<td>
+          				    		<label for="code" />
+                               		<div>
+                                    	<field name="code" class="oe_inline"/>
+                                	</div>
+                				</td>
+                				<td>
+          				    		<label for="name" string="Position de stock :"/>
+                               		<div>
+                                    	<field name="name" class="oe_inline"/>
+                                	</div>
+                				</td>
+                				<td>
+          				    		<label for="doc_type_id" />
+                               		<div>
+                                    	<field name="doc_type_id" class="oe_inline"/>
+                                	</div>
+                				</td>
+                				<td>
+          				    		<label for="event_id" />
+                               		<div>
+                                    	<field name="event_id" class="oe_inline"/>
+                                	</div>
+                				</td>
+                				<td colspan="2">
+          				    		<label for="contract_id" string="Contrat :"/>
+                               		<div>
+                                    	<field name="contract_id" class="oe_inline"/>
+                                	</div>
+                				</td>
+                			</tr>
+                			<tr>
+                				<td>
+          				    		<label for="vehicle_id" />
+                               		<div>
+                                    	<field name="vehicle_id" class="oe_inline"/>
+                                	</div>
+                				</td>
+                				<td>
+          				    		<label for="license_plate" />
+                               		<div>
+                                    	<field name="license_plate" class="oe_inline"/>
+                                	</div>
+                				</td>
+                				<td>
+          				    		<label for="model_id" />
+                               		<div>
+                                    	<field name="model_id" class="oe_inline"/>
+                                	</div>
+                				</td>
+                				<td>
+          				    		<label for="category_id" />
+                               		<div>
+                                    	<field name="category_id" class="oe_inline"/>
+                                	</div>
+                				</td>
+                				<td>
+          				    		<label for="acriss" />
+                               		<div>
+                                    	<field name="acriss" class="oe_inline"/>
+                                	</div>
+                				</td>
+                				<td>
+          				    		<label for="lot" />
+                               		<div>
+                                    	<field name="lot" class="oe_inline"/>
+                                	</div>
+                				</td>
+                			</tr>
+                			<tr>
+                				<td>
+                				</td>
+                				<td>
+                				</td>
+                				<td class="blue_bold">
+                					Usure :
+                				</td>
+                				<td class="blue_bold">
+                					8eme réservoir :
+                				</td>
+                				<td>
+                				</td>
+                				<td>
+                				</td>
+                			</tr>  
+                			<tr>
+                				<td>
+          				    		<label for="src_agence_id" />
+                               		<div>
+                                    	<field name="src_agence_id" class="oe_inline"/>
+                                	</div>
+                				</td>
+                				<td>
+          				    		<label for="date_start" />
+                               		<div>
+                                    	<field name="date_start" class="oe_inline"/>
+                                	</div>
+                				</td>
+                				<td>
+          				    		<label for="odometer_start" />
+                               		<div>
+                                    	<field name="odometer_start" class="oe_inline"/>
+                                	</div>
+                				</td>
+                				<td>
+          				    		<label for="fuel_qty_start" />
+                               		<div>
+                                    	<field name="fuel_qty_start" class="oe_inline"/>
+                                	</div>
+                				</td>
+                				<td>
+          				    		<label for="odometer_start2" />
+                               		<div>
+                                    	<field name="odometer_start2" class="oe_inline"/>
+                                	</div>
+                				</td>
+                				<td>
+                				</td>
+                			</tr>  
+                			<tr>
+                				<td>
+          				    		<label for="dest_agence_id" />
+                               		<div>
+                                    	<field name="dest_agence_id" class="oe_inline"/>
+                                	</div>
+                				</td>
+                				<td>
+          				    		<label for="date_stop" />
+                               		<div>
+                                    	<field name="date_stop" class="oe_inline"/>
+                                	</div>
+                				</td>
+                				<td>
+          				    		<label for="odometer_end" />
+                               		<div>
+                                    	<field name="odometer_end" class="oe_inline"/>
+                                	</div>
+                				</td>
+                				<td>
+          				    		<label for="fuel_qty_end" />
+                               		<div>
+                                    	<field name="fuel_qty_end" class="oe_inline"/>
+                                	</div>
+                				</td>
+                				<td>
+          				    		<label for="odometer_end2" />
+                               		<div>
+                                    	<field name="odometer_end2" class="oe_inline"/>
+                                	</div>
+                				</td>
+                				<td>
+                				</td>
+                			</tr>   
+                			<tr>
+                				<td>
+                				</td>
+                				<td>
+                				</td>
+                				<td colspan="2">
+                                    <field name="close" class="oe_inline"/>
+                                	<label for="close" />
+                				</td>
+                				<td>
+                				</td>
+                				<td>
+                				</td>
+                			</tr>                                			
+                		</table>
+                		<notebook>
+                			<page string="Désignation">
+                				<group>
+                					<group string="Conducteur">
+                						<field name="driver_id" />
+                						<field name="driver_address" />
+                					</group>
+                					<group string="Tiers">
+                						<field name="partner_id" />
+                						<field name="partner_address" />
+                					</group>
+                				</group>
+                			</page>
+                			<page string="Divers">
+                				<table width="100%">
+                					<tr>
+                						<td>
+                							<label for="d_motif_id" />
+                               				<div>
+                                    			<field name="d_motif_id" class="oe_inline"/>
+                                			</div>
+                						</td>
+                						<td>
+                							<label for="user_id" />
+                               				<div>
+                                    			<field name="user_id" class="oe_inline"/>
+                                			</div>
+                						</td>
+                						<td></td>
+                						<td></td>
+                					</tr>
+                					<tr>
+                						<td>
+                							<label for="d_niveau" />
+                               				<div>
+                                    			<field name="d_niveau" class="oe_inline"/>
+                                			</div>
+                						</td>
+                						<td>
+                							<label for="d_doc_num" />
+                               				<div>
+                                    			<field name="d_doc_num" class="oe_inline"/>
+                                			</div>
+                						</td>
+                						<td>
+                							<label for="d_main_state_id" />
+                               				<div>
+                                    			<field name="d_main_state_id" class="oe_inline"/>
+                                			</div>
+                						</td>
+                						<td>
+                							<label for="d_prev_panne" />
+                               				<div>
+                                    			<field name="d_prev_panne" class="oe_inline"/>
+                                			</div>
+                						</td>
+                					</tr>
+                					<tr>
+                						<td>
+                							<label for="product_id" />
+                               				<div>
+                                    			<field name="product_id" class="oe_inline" domain="[('prestation_ok','=',1)]" context="{'default_prestation_ok':1}"/>
+                                			</div>
+                						</td>
+                						<td>
+                							<label for="default_code" />
+                               				<div>
+                                    			<field name="default_code" class="oe_inline"/>
+                                			</div>
+                						</td>
+                						<td>
+                							<label for="uom_id" />
+                               				<div>
+                                    			<field name="uom_id" class="oe_inline"/>
+                                			</div>
+                						</td>
+                						<td>
+
+                						</td>
+                					</tr>   
+                					<tr>
+                						<td>
+                							<label for="d_category_id" />
+                               				<div>
+                                    			<field name="d_category_id" class="oe_inline"/>
+                                			</div>
+                						</td>
+                						<td>
+                							<label for="d_libelle" />
+                               				<div>
+                                    			<field name="d_libelle" class="oe_inline"/>
+                                			</div>
+                						</td>
+                						<td>
+                							<label for="d_model_id" />
+                               				<div>
+                                    			<field name="d_model_id" class="oe_inline"/>
+                                			</div>
+                						</td>
+                						<td>
+                						</td>
+                					</tr>
+                					<tr>
+                						<td>
+                							<label for="d_origin" />
+                               				<div>
+                                    			<field name="d_origin" class="oe_inline"/>
+                                			</div>
+                						</td>
+                						<td>
+                							<label for="d_ref" />
+                               				<div>
+                                    			<field name="d_ref" class="oe_inline"/>
+                                			</div>
+                						</td>
+                						<td>
+                							<label for="company_id" />
+                               				<div>
+                                    			<field name="company_id" class="oe_inline"/>
+                                			</div>
+                						</td>
+                						<td>
+                						</td>
+                					</tr>
+                					<tr>
+                						<td>
+                							<label for="d_date_invoice_start" />
+                               				<div>
+                                    			<field name="d_date_invoice_start" class="oe_inline"/>
+                                			</div>
+                						</td>
+                						<td>
+                							<label for="d_date_invoice_stop" />
+                               				<div>
+                                    			<field name="d_date_invoice_stop" class="oe_inline"/>
+                                			</div>
+                						</td>
+                						<td>
+                							<label for="d_date_invoice_last" />
+                               				<div>
+                                    			<field name="d_date_invoice_last" class="oe_inline"/>
+                                			</div>
+                						</td>
+                						<td>
+                							<label for="d_qty" />
+                               				<div>
+                                    			<field name="d_qty" class="oe_inline"/>
+                                			</div>
+                						</td>
+                					</tr>  
+
+                					<tr>
+                						<td>
+                						</td>
+                						<td>
+                							<label for="d_date_archive" />
+                               				<div>
+                                    			<field name="d_date_archive" class="oe_inline"/>
+                                			</div>
+                						</td>
+                						<td>
+                						</td>
+                						<td>
+                						</td>
+                					</tr>                					                					             				
+                				</table>
+                			</page>
+                			<page string="Départ et positionnement">
+                				<group>
+                					<group string="Départ">
+                						<field name="dp_src_partner_id" />
+                						<field name="dp_src_address" />
+                					</group>
+                					<group string="Positionnement">
+                						<field name="dp_dest_partner_id" />
+                						<field name="dp_dest_address" />
+                					</group>
+                				</group>
+                			</page>
+                		</notebook>
+            		</sheet>
+            	</form>
+            </field>
+        </record>
+        
+        <record model='ir.ui.view' id='fleet_vehicle_move_tree'>
+            <field name="name">fleet.vehicle.move.tree</field>
+            <field name="model">fleet.vehicle.move</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+            	<tree>
+            		<field name="model_id" string='Modèle'/>
+            		<field name="vehicle_id" string="Matériel"/>
+            		<field name="source_id" string="Pos. départ"/>
+            		<field name="name" string="Position"/>
+            		<field name="fr_to_cible_id" string="Pos. arrivée"/>
+            		<field name="license_plate" string="Immat."/>
+            		<field name="src_agence_id" string="Age départ"/>
+            		<field name="dest_agence_id" string="Age arrivée"/>
+            		<field name="date_start" string="Date dep"/>
+            		<field name="date_stop" string="Date fin"/>
+            		<field name="odometer_start" string="Cpteur dep"/>
+            		<field name="odometer_end" string="Cpteur fin"/>
+            		<field name="diff_odometer" string="Parcourus"/>
+            		<field name="driver_id" string="Conducteur"/>
+            		<field name="partner_id" string="Client"/>
+            		<field name="close" string="Clos"/>
+            		<field name="mro_id" invisible="1"/>
+            		<field name="user_id" invisible="1" string="Utilisateur"/>
+            		<field name="state" />
+            	</tree>
+            </field>
+        </record>
+
+		<record id="fleet_vehicle_move_search" model="ir.ui.view">
+            <field name="name">fleet.vehicle.move.search</field>
+            <field name="model">fleet.vehicle.move</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Mouvements">
+                	<field name="src_agence_id" />
+                	<field name="dest_agence_id" />
+                	<field name="partner_id" />
+                	<field name="vehicle_id" />
+                	<field name="model_id" />
+                	<field name="category_id" />
+                	<filter string="Mon agence" name="own1" domain="[('src_agence_id.user_ids','in',uid)]" help="Les mouvements ayant mon agence comme agence de départ"/>
+                	<filter string="Agence et Catégorie ( C )" name="c1" domain="[('src_agence_id','=',context.get('default_src_agence_id')),('category_id','=',context.get('default_category_id'))]"/>
+              </search>
+            </field>
+        </record>
+
+       <record model="ir.ui.view" id="fleet_vehicle_move_gantt0">
+            <field name="name">fleet.vehicle.move.gantt</field>
+            <field name="model">fleet.vehicle.move</field>
+            <field name="arch" type="xml">
+                <gantt0 date_start="date_start" date_stop="date_stop" default_group_by="vehicle_id" mode="two" string="Planning">
+                </gantt0>
+            </field>
+        </record>
+
+		<record model="ir.ui.view" id="fleet_vehicle_move_calendar">
+    		<field name="name">fleet.vehicle.move.calendar</field>
+        	<field name="model">fleet.vehicle.move</field>
+        	<field name="arch" type="xml">
+            	<calendar color="color" date_start="date_start" date_stop="date_stop" string="Planning">
+                	<field name="vehicle_id"/>
+                    <field name="category_id"/>
+                    <field name="partner_id"/>
+                </calendar>
+            </field>
+    	</record>
+    	
+        <record model='ir.ui.view' id='fleet_vehicle_move_type_form'>
+            <field name="name">fleet.vehicle.move.type.form</field>
+            <field name="model">fleet.vehicle.move.type</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+            	<form>
+            		<sheet>
+            			<group>
+            				<group>
+            					<field name="code" />
+            					<field name="color" />
+            				</group>
+            				<group>
+            					<field name="name" />
+            					<field name="textcolor"/>
+            				</group>
+            			</group>
+            		</sheet>
+            	</form>
+            </field>
+        </record>
+        
+        <record model='ir.ui.view' id='fleet_vehicle_move_type_tree'>
+            <field name="name">fleet.vehicle.move.type.tree</field>
+            <field name="model">fleet.vehicle.move.type</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+            	<tree>
+            		<field name="code" />
+            		<field name="name" />
+            		<field name="color" />
+            		<field name="textcolor" />
+            	</tree>
+            </field>
+        </record>
+        
+        <record model='ir.ui.view' id='fleet_vehicle_move_location_tree'>
+            <field name="name">fleet.vehicle.move.location.tree</field>
+            <field name="model">fleet.vehicle.move.location</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+            	<tree>
+            		<field name="code" />
+            		<field name="name" />
+            	</tree>
+            </field>
+        </record>
+
+	<!-- INTERFACE DE SAISIE DES CONSOMMATIONS KILOMÉTRIQUES -->
+
+	    <record model="ir.ui.view" id="fleet_vehicle_contract_odometer_form">
+			<field name="name">fleet.vehicle.contract.odometer.form</field>
+			<field name="model">fleet.vehicle.contract.odometer</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Consommation kilométrique">
+					<header>
+						<button name="compute_odometer_change" string="Mettre à jour les compteurs des véhicules" type="object" />
+					</header>
+					<sheet>
+						<group>
+							<field name="name" />
+						</group>
+						<group>
+							<group>
+								<field name="frequency" />
+								<field name="product_id" />
+							</group>
+							<group>
+								<field name="date_start" />
+								<field name="date_stop" />
+							</group>
+						</group>
+						<notebook>
+							<page string="Lignes">
+								<field name="line_ids">
+									<tree editable="bottom">
+										<field name="contract_id"/>
+										<field name="vehicle_id" />
+										<field name="date_start"/>
+										<field name="odometer_start" />
+										<field name="date_stop" />
+										<field name="odometer_stop" />
+									</tree>
+								</field>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+	    <record model="ir.ui.view" id="fleet_vehicle_contract_odometer_tree">
+			<field name="name">fleet.vehicle.contract.odometer.tree</field>
+			<field name="model">fleet.vehicle.contract.odometer</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="frequency" />
+					<field name="date_start" />
+					<field name="date_stop" />
+					<field name="product_id" />
+				</tree>
+			</field>
+		</record>
+
+	    <record model="ir.ui.view" id="fleet_vehicle_contract_odometer_line_tree">
+			<field name="name">fleet.vehicle.contract.odometer.line.tree</field>
+			<field name="model">fleet.vehicle.contract.odometer.line</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="contract_id" />
+					<field name="vehicle_id" />
+					<field name="date_start" />
+					<field name="date_stop" />
+					<field name="odometer_start" />
+					<field name="odometer_stop" />
+				</tree>
+			</field>
+		</record>
+
+
+  	<!-- ========================== fleet_vehicle_category =============================== -->
+
+	    <record model="ir.ui.view" id="fleet_vehicle_category_form">
+			<field name="name">fleet.vehicle.category.form</field>
+			<field name="model">fleet.vehicle.category</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group col="4">
+							<field name="name" />
+							<field name="hook_ok" />
+							<field name="note" />
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+			
+		<record model="ir.ui.view" id="fleet_vehicle_category_tree">
+			<field name="name">fleet.vehicle.category.tree</field>
+			<field name="model">fleet.vehicle.category</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree>
+                	<field name="name"/>
+                	<field name="note" />
+					<field  name="hook_ok"/>
+				</tree>
+			</field>
+		</record>
+	</data>
+</odoo>

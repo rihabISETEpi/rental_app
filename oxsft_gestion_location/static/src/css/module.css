@@ -1,0 +1,35 @@
+.blue_bold{
+      		font-weight: bold;
+      		color: blue;
+      		}
+.space {
+      		  width: 10%;
+      		}
+.move_table {
+                width:100%;
+              }
+.move_tr {
+      			    height:60px;
+      	           }
+.move_td {
+      			    width:25%;
+      	           }
+
+.openerp .oe_application .oe_form_sheetbg table label {
+  					font-weight: bold;
+					}
+
+.border_style{
+      		border : 1px solid black;
+      }
+.border_style > tr{
+      	border : 1px solid black;
+      }
+.ligne {
+         width:100%;
+         border:1px solid black;
+      }
+.row2 {
+  	  margin-right: -30px;
+  	  margin-left: -30px;
+	}

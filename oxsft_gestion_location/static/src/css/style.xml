@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+<template id="web_style" inherit_id="web.layout">
+  <xpath expr="//head" position="inside">
+    <style type="text/css">
+.blue_bold{
+      		font-weight: bold;
+      		color: blue;
+      		}
+
+.openerp .oe_application .oe_form_sheetbg table label {
+  					font-weight: bold;
+					}
+
+.border_style{
+      		border : 1px solid black;
+      }
+.border_style > tr{
+      	border : 1px solid black;
+      }
+.ligne {
+         width:100%;
+         border:1px solid black;
+      }
+.row2 {
+  	  margin-right: -30px;
+  	  margin-left: -30px;
+	}
+    </style>
+  </xpath>
+</template>
+
+<!-- <template id="report_style" inherit_id="report.layout">
+  <xpath expr="//style" position="after">
+    <style type="text/css">
+      .border_style{
+      		border : 1px solid black;
+      }
+      .border_style > tr{
+      		border : 1px solid black;
+      }
+      	.ligne {
+      			    width:100%;
+      			    border:1px solid black;
+      	           }
+	.row2 {
+  			margin-right: -30px;
+  			margin-left: -30px;
+			}
+   </style>
+  </xpath>
+</template> -->
+</data>
+</openerp>

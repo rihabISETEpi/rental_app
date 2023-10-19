@@ -25,7 +25,7 @@
     'category': 'Management',
     'website' : '',
     'author': 'OXYSOFT',
-    'depends': ["oxsft_gestion_location"],
+    'depends': [],
     'data': [
             'views/vehicle_cost_report_view.xml',
             'security/ir.model.access.csv',
